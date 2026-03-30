@@ -24,11 +24,11 @@ FOR OPTIMIZATION:
    - High Expertise: Python, Machine Learning (ML), Data Analysis, ML Modeling, POC Research & Development
    - Good Expertise: Computer Vision
    - Medium Expertise: SQL
-   - Low/Knowledge Only: PySpark, GenAI (has knowledge, but no direct experience)
+   - Knowledge/Project-Level: PySpark, GenAI & LLMs (Candidate builds projects with LLMs and has solid knowledge, but lacks large scale pipeline experience. Do not overstate.)
    - STRICT RULE: Do completely NOT add keywords or skills that are not explicitly present in the provided Job Description text.
 
 2. Enhance Summary:
-   Replace generic text with JD-specific keywords and years.
+   Replace generic text with JD-specific keywords.
    
 3. Enhance Skills Section:
    Add missing skills from JD ONLY if they align with the candidate's actual skills listed above.
