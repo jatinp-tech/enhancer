@@ -21,7 +21,7 @@ PROMPT_TEMPLATE = """You are a LaTeX resume optimizer. Output ONLY raw LaTeX cod
 
 FOR OPTIMIZATION:
 1. Analyze JD keywords against candidate's actual skills:
-   - High Expertise: Python, Machine Learning (ML), Data Analysis, ML Modeling, POC Research
+   - High Expertise: Python, Machine Learning (ML), Data Analysis, ML Modeling, POC Research & Development
    - Good Expertise: Computer Vision
    - Medium Expertise: SQL
    - Low/Knowledge Only: PySpark, GenAI (has knowledge, but no direct experience)
