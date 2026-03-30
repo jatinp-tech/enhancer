@@ -73,13 +73,12 @@ def optimize_resume(jd: str, resume: str, model_id: str) -> str:
 st.set_page_config(page_title="LaTeX Resume Optimizer", page_icon="📄")
 st.title("📄 LaTeX Resume Optimizer")
 
-st.markdown("Minimal ATS resume optimizer using Google AI Studio selected models.")
+st.markdown("ATS resume optimizer with JD matching using Google AI Studio selected models.")
 
 MODEL_OPTIONS = {
-    "gemini-3.0-flash": "1. Gemini 3 Flash | The Best (Strongest reasoning, won't break LaTeX)",
-    "gemini-2.5-flash": "2. Gemini 2.5 Flash | Highly Capable (Almost as smart, great matcher)",
-    "gemini-3.1-flash-lite": "3. Gemini 3.1 Flash Lite | The Workhorse (Perfect for 50+ bulk iterations)",
-    "gemma-3-27b": "4. Gemma 3 (27B) | Open Model (Good text, but risks LaTeX syntax errors)"
+    "gemini-3.0-flash": "1. Gemini 3 Flash (Max 20 Requests/Day | The Best, won't break LaTeX)",
+    "gemini-2.5-flash": "2. Gemini 2.5 Flash (Max 20 Requests/Day | Highly Capable alternative)",
+    "gemini-3.1-flash-lite": "3. Gemini 3.1 Flash Lite (Max 500 Requests/Day | Best for bulk testing)"
 }
 
 selected_model = st.selectbox(
@@ -157,3 +156,5 @@ if st.button("Generate Optimized Resume", type="primary"):
                     st.warning("💡 **Tip:** You have hit the daily free quota for this specific AI model. Please scroll up and select a different model (e.g. Gemini 3.1 Flash Lite or Gemma) from the dropdown menu to continue!")
                 else:
                     st.error(f"An error occurred: {error_msg}")
+
+
