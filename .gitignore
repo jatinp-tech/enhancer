@@ -7,3 +7,7 @@ __pycache__/
 optimized.tex
 .env
 .streamlit/secrets.toml
+job.txt
+resume_latex.py
+resume_latex_default.py
+ReadMe.pd

@@ -32,7 +32,7 @@ FOR OPTIMIZATION:
    - STRICT RULE: Do completely NOT add keywords or skills that are not explicitly present in the provided Job Description text AND aligned with the candidate's actual skills above.
 
 2. Enhance Summary:
-   - Use a direct, technical headline. (e.g. "Machine Learning Engineer with 3+ years..")
+   - Use a direct, technical headline. (e.g. "Machine Learning Engineer with 3 years..")
    - Replace generic text with JD-specific keywords that MATCH the candidate's skills listed above.
    - CRITICAL: If the JD asks for AWS/Azure/GCP, DO NOT mention them. Focus on Python/ML.
    
