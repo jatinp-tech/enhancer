@@ -26,11 +26,15 @@ FOR OPTIMIZATION:
    - High Expertise: Python, Machine Learning (ML), Data Analysis, ML Modeling, POC Research & Development
    - Good Expertise: Computer Vision
    - Medium Expertise: SQL
-   - Knowledge/Project-Level: PySpark, GenAI, LLMs and NLP (Candidate builds projects with LLMs and NLP and has good knowledge, but lacks large scale pipeline experience. Do not overstate.)
-   - STRICT RULE: Do completely NOT add keywords or skills that are not explicitly present in the provided Job Description text.
+   - Knowledge/Project-Level: PySpark, GenAI, LLMs, NLP, and Basic RAG (Candidate has knowledge/POC project experience only. NOT for large-scale enterprise pipelines.)
+   - STRICTLY FORBIDDEN: Do NOT include Cloud Platforms (AWS, Azure, GCP) or "Advanced Pipelines".
+   - NO FLUFF: Strictly avoid generic adjectives like "Talented", "Highly Motivated", or "Passionate".
+   - STRICT RULE: Do completely NOT add keywords or skills that are not explicitly present in the provided Job Description text AND aligned with the candidate's actual skills above.
 
 2. Enhance Summary:
-   Replace generic text with JD-specific keywords.
+   - Use a direct, technical headline. (e.g. "Machine Learning Engineer with 3+ years..")
+   - Replace generic text with JD-specific keywords that MATCH the candidate's skills listed above.
+   - CRITICAL: If the JD asks for AWS/Azure/GCP, DO NOT mention them. Focus on Python/ML.
    
 3. Enhance Skills Section:
    Add missing skills from JD ONLY if they align with the candidate's actual skills listed above.
