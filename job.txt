@@ -1,25 +1,0 @@
-Jatin 
-Job description
-Requisition ID:  1697513
-Requisition Id: 1697513
- 
-As a global leader in assurance, tax, transaction and advisory services, we hire and develop the most passionate people in their field to help build a better working world. This starts with a culture that believes in giving you the training, opportunities and creative freedom. At EY, we don't just focus on who you are now, but who you can become. We believe that it’s your career and ‘It’s yours to build’ which means potential here is limitless and we'll provide you with motivating and fulfilling experiences throughout your career to help you on the path to becoming your best professional self.  The opportunity : Consultant-National-Forensics-ASU - Forensics - Investigations & Compliance - Gurgaon  National : 
-National comprises of sector agnostic teams working across industries for a well rounded experience.
-ASU - Forensics - Investigations & Compliance : 
-Successful organizations depend on their reputation for keeping promises, respecting laws and behaving ethically to maintain stakeholder trust. EY Forensic & Integrity Services professionals help organizations protect and restore enterprise and financial reputation. We assist companies and their legal counsel to investigate facts, resolve disputes and manage regulatory challenges. We put integrity at the heart of compliance programs to help better manage ethical and reputational risks. 
-Our integrated approach ranges from enhancements in areas of perceived weakness or issues — including governance, controls, culture and data insights — to full organizational design and structural implementation. We want to help companies safeguard and restore financial and brand reputations. The insights and quality services we deliver help build trust and confidence in the capital markets and in economies the world over.
- Your key responsibilities  Technical Excellence
- 
-Machine learning, Artificial intelligence, NLP, Python, Image analytics
- 
- Skills and attributes  To qualify for the role you must have Qualification
-Bachelor of Technology in Computer Science
-Master of Science in Data Science
-PhD in Computer Science
-Certification in Data Analytics
-Experience
-Machine Learning (3+ years)
-Data Analysis (2+ years)
-Deep Learning (2+ years)
-Data Engineering (4+ years)
- What we look for  People with the ability to work in a collaborative manner to provide services across multiple client departments while following the commercial and legal requirements. You will need a practical approach to solving issues and complex problems with the ability to deliver insightful and practical solutions. We look for people who are agile, curious, mindful, and able to sustain positive energy, while being adaptable and creative in their approach.
