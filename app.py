@@ -138,20 +138,12 @@ if st.button("Generate Optimized Resume", type="primary"):
                                 file_name="optimized.pdf",
                                 mime="application/pdf"
                             )
+                            st.pdf_viewer(pdf_data)
+                            
                         else:
                             st.error("❌ Failed to compile LaTeX to PDF. The model likely generated invalid LaTeX structure.")
                             with st.expander("View LaTeX Errors"):
                                 st.text(compile_process.stdout)
-                
-                st.download_button(
-                    label="⬇️ Download raw optimized.tex",
-                    data=optimized_tex,
-                    file_name="optimized.tex",
-                    mime="text/plain"
-                )
-                
-                with st.expander("Preview Optimized LaTeX source"):
-                    st.code(optimized_tex, language="latex")
             except Exception as e:
                 error_msg = str(e)
                 if "429" in error_msg or "quota" in error_msg.lower():
