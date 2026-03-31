@@ -2,11 +2,13 @@ import streamlit as st
 from google import genai
 import sys
 
-# Pull the API key securely from Streamlit Secrets, with a fallback for local testing
-try:
-    API_KEY = st.secrets["GEMINI_API_KEY"]
-except (KeyError, FileNotFoundError):
-    API_KEY = "" # Or leave this blank
+# Fetch API key from Streamlit Secrets
+API_KEY = st.secrets.get("GEMINI_API_KEY", "")
+
+if not API_KEY:
+    st.error("🔑 **API Key Missing!**")
+    st.info("To fix this locally: Paste your key into `.streamlit/secrets.toml` like this:\n`GEMINI_API_KEY = 'your-key-here'`")
+    st.stop()
 
 MARKDOWN_ARTIFACTS = ["```latex", "```", "```python", "```text"]
 
@@ -24,7 +26,7 @@ FOR OPTIMIZATION:
    - High Expertise: Python, Machine Learning (ML), Data Analysis, ML Modeling, POC Research & Development
    - Good Expertise: Computer Vision
    - Medium Expertise: SQL
-   - Knowledge/Project-Level: PySpark, GenAI & LLMs (Candidate builds projects with LLMs and has solid knowledge, but lacks large scale pipeline experience. Do not overstate.)
+   - Knowledge/Project-Level: PySpark, GenAI, LLMs and NLP (Candidate builds projects with LLMs and NLP and has good knowledge, but lacks large scale pipeline experience. Do not overstate.)
    - STRICT RULE: Do completely NOT add keywords or skills that are not explicitly present in the provided Job Description text.
 
 2. Enhance Summary:
@@ -76,9 +78,10 @@ st.title("📄 LaTeX Resume Optimizer")
 st.markdown("ATS resume optimizer with JD matching using Google AI Studio selected models.")
 
 MODEL_OPTIONS = {
-    "gemini-3.0-flash": "1. Gemini 3 Flash (Max 20 Requests/Day | The Best, won't break LaTeX)",
-    "gemini-2.5-flash": "2. Gemini 2.5 Flash (Max 20 Requests/Day | Highly Capable alternative)",
-    "gemini-3.1-flash-lite": "3. Gemini 3.1 Flash Lite (Max 500 Requests/Day | Best for bulk testing)"
+    "gemini-3-flash-preview": "1. Gemini 3 Flash (20 RPD | The Best, won't break LaTeX)",
+    "gemini-2.5-flash": "2. Gemini 2.5 Flash (20 RPD | Highly Capable alternative)",
+    "gemini-3.1-flash-lite-preview": "3. Gemini 3.1 Flash Lite (500 RPD | Best for bulk testing)",
+    "gemma-3-27b": "4. Gemma 3 27B (14,400 RPD | Massive Backup)"
 }
 
 selected_model = st.selectbox(
