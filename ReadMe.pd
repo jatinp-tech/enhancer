@@ -1,0 +1,2 @@
+python resume_latex.py --jd job.txt --resume resume.tex --output optimized.tex
+pdflatex -interaction=nonstopmode optimized.tex

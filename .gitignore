@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pdf
+*.log
+*.aux
+*.out
+optimized.tex
+.env
+.streamlit/secrets.toml
