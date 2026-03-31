@@ -137,9 +137,7 @@ if st.button("Generate Optimized Resume", type="primary"):
                                 data=pdf_data,
                                 file_name="optimized.pdf",
                                 mime="application/pdf"
-                            )
-                            st.pdf_viewer(pdf_data)
-                            
+                            )                            
                         else:
                             st.error("❌ Failed to compile LaTeX to PDF. The model likely generated invalid LaTeX structure.")
                             with st.expander("View LaTeX Errors"):
