@@ -26,8 +26,8 @@ FOR OPTIMIZATION:
    - High Expertise: Python, Machine Learning (ML), Data Analysis, ML Modeling, POC Research & Development
    - Good Expertise: Computer Vision
    - Medium Expertise: SQL
-   - Knowledge/Project-Level: PySpark, GenAI, LLMs, NLP, and Basic RAG (Candidate has knowledge/POC project experience only. NOT for large-scale enterprise pipelines.)
-   - STRICTLY FORBIDDEN: Do NOT include Cloud Platforms (AWS, Azure, GCP) or "Advanced Pipelines".
+   - Knowledge/Project-Level: PySpark, GenAI, LLMs, NLP, and Basic RAG (Candidate has knowledge/POC project experience only.  NOT for large-scale enterprise pipelines.)
+   - STRICTLY FORBIDDEN: Do NOT include Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", or "Agentic AI" (Candidate has NO experience for Agentic AI, so do NOT include even if it is mentioned in the JD).
    - NO FLUFF: Strictly avoid generic adjectives like "Talented", "Highly Motivated", or "Passionate".
    - STRICT RULE: Do completely NOT add keywords or skills that are not explicitly present in the provided Job Description text AND aligned with the candidate's actual skills above.
 
