@@ -23,13 +23,13 @@ PROMPT_TEMPLATE = """You are a LaTeX resume optimizer. Output ONLY raw LaTeX cod
 
 FOR OPTIMIZATION:
 1. Analyze JD keywords against candidate's actual skills:
-   - High Expertise: Python, Machine Learning (ML), Data Analysis, ML Modeling, POC Research & Development
+   - High Expertise: Python, Machine Learning (ML), Data Analysis, ML Modeling, POC Research & Development, Data Cleansing, Regression, Decision Trees
    - Good Expertise: Computer Vision
    - Medium Expertise: SQL
    - Knowledge/Project-Level: PySpark, GenAI, LLMs, NLP, and Basic RAG (Candidate has knowledge/POC project experience only.  NOT for large-scale enterprise pipelines.)
    - STRICTLY FORBIDDEN: Do NOT include Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", or "Agentic AI" (Candidate has NO experience for Agentic AI, so do NOT include even if it is mentioned in the JD).
    - NO FLUFF: Strictly avoid generic adjectives like "Talented", "Highly Motivated", or "Passionate".
-   - STRICT RULE: Do completely NOT add keywords or skills that are not explicitly present in the provided Job Description text AND aligned with the candidate's actual skills above.
+   - CORE EXPERTISE ALIGNMENT: Prioritize the specific skills listed above. However, if the JD asks for standard ML/Data Analysis techniques (like Regression, Decision Trees, Data Cleansing, or Feature Engineering), you MUST include them as they are inherently part of the candidate's High Expertise in "Machine Learning (ML)" and "Data Analysis".
 
 2. Enhance Summary:
    - Use a direct, technical headline. (e.g. "Machine Learning Engineer with 3 years..")
@@ -37,7 +37,7 @@ FOR OPTIMIZATION:
    - CRITICAL: If the JD asks for AWS/Azure/GCP, DO NOT mention them. Focus on Python/ML.
    
 3. Enhance Skills Section:
-   Add missing skills from JD ONLY if they align with the candidate's actual skills listed above.
+       Add JD keywords to the skills section if they align with the candidate's core domains (ML, CV, Python). Standard ML/Data techniques like Regression/Decision Trees should be included if present in the JD.
    Organize: Programming, Tools, ML/CV, Domain Skills.
    
 4. Enhance Experience:
