@@ -33,11 +33,12 @@ FOR OPTIMIZATION:
 
 2. Enhance Summary:
    - Use a direct, technical headline. (e.g. "Machine Learning Engineer with 3 years..")
+   - strict - do not change years of experience, keep exact.
    - Replace generic text with JD-specific keywords that MATCH the candidate's skills listed above.
    - CRITICAL: If the JD asks for AWS/Azure/GCP, DO NOT mention them. Focus on Python/ML.
    
 3. Enhance Skills Section:
-       Add JD keywords to the skills section if they align with the candidate's core domains (ML, CV, Python). Standard ML/Data techniques like Regression/Decision Trees should be included if present in the JD.
+   Add JD keywords to the skills section if they align with the candidate's core domains (ML, CV, Python). Standard ML/Data techniques like Regression/Decision Trees should be included if present in the JD.
    Organize: Programming, Tools, ML/CV, Domain Skills.
    
 4. Enhance Experience:
@@ -49,6 +50,7 @@ FOR OPTIMIZATION:
    Do NOT remove or modify any LaTeX command definitions.
 
 ==== ABSOLUTELY CRITICAL ====
+- strict - do not change years of experience, keep exact.
 Your entire output is INVALID if it contains:
 ✗ ** or **text** (markdown bold)
 ✗ __ or __text__ (markdown italic)  
