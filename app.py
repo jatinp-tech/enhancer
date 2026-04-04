@@ -121,7 +121,7 @@ if st.button("Generate Optimized Resume", type="primary"):
                     
                     with tempfile.TemporaryDirectory() as temp_dir:
                         tex_path = os.path.join(temp_dir, "optimized.tex")
-                        pdf_path = os.path.join(temp_dir, "optimized.pdf")
+                        pdf_path = os.path.join(temp_dir, "Jatin_Prajapati_Resume.pdf")
                         
                         with open(tex_path, "w", encoding="utf-8") as f:
                             f.write(optimized_tex)
@@ -141,7 +141,7 @@ if st.button("Generate Optimized Resume", type="primary"):
                             st.download_button(
                                 label="⬇️ Download Optimized PDF",
                                 data=pdf_data,
-                                file_name="optimized.pdf",
+                                file_name="Jatin_Prajapati_Resume.pdf",
                                 mime="application/pdf"
                             )                            
                         else:
