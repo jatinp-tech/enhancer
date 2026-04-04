@@ -51,12 +51,12 @@ FOR OPTIMIZATION:
 
 ==== ABSOLUTELY CRITICAL ====
 - strict - do not change years of experience, keep exact.
-Your entire output is INVALID if it contains:
-✗ ** or **text** (markdown bold)
-✗ __ or __text__ (markdown italic)  
-✗ ``` (code blocks)
-✗ # ## ### (headers)
-✗ - or * bullets outside \\item
+Your entire output is INVALID if you use any markdown formatting such as:
+✗ Markdown bold (do NOT use double asterisks)
+✗ Markdown italic (do NOT use underscores)  
+✗ Markdown code blocks or fences
+✗ Markdown headers
+✗ Markdown bullets outside \item
 
 JOB DESCRIPTION:
 {jd}
@@ -69,6 +69,7 @@ OUTPUT ONLY the modified LaTeX code:"""
 def clean_markdown(text: str) -> str:
     for artifact in MARKDOWN_ARTIFACTS:
         text = text.replace(artifact, "")
+    text = text.replace("**", "")
     return text.strip()
 
 def optimize_resume(jd: str, resume: str, model_id: str) -> str:
