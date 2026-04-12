@@ -38,13 +38,13 @@ Use these skills DYNAMICALLY to match any relevant JD requirement:
    - Select and highlight the most relevant skills from the "Source of Truth" above.
 2. EXPERIENCE BULLETS: 
    - Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Designed Frameworks").
-   - DYNAMIC MAPPING: Match JD requirements (e.g., 'Model Safety', 'Benchmarking', 'Non-deterministic systems') to candidate expertise in **Adversarial Learning**, **Vision Validation**, or **Research Implementation**.
-   - Example Context: If JD asks for 'Security', highlight 'Robustness & Security'. If JD asks for 'Productivity/QA', highlight 'Hallucination Detection'.
+   - DYNAMIC MAPPING: Match JD requirements to candidate expertise in **Adversarial Learning**, **Vision Validation**, or **Research Implementation**.
+   - Ensure the tone remains professional and technical without unnecessary emphasis.
 3. RESEARCH & PROJECTS:
    - Do NOT remove. Align the *descriptions* to match the job's domain. Use "TraceNet" or "Alice-Bob" to prove technical depth and implementation skills.
 4. SKILLS SECTION:
    - Organize: Programming, ML Systems, Machine Learning, Computer Vision, Frameworks, Tools.
-   - Use \\textbf{{Keyword}} for emphasis within LaTeX, NEVER markdown **.
+   - Maintain the existing LaTeX formatting (e.g., \\textbf{{Category:}}). Do NOT add extra bolding to keywords.
 
 JOB DESCRIPTION:
 {jd}
