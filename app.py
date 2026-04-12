@@ -24,27 +24,25 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
 6. STRICTLY FORBIDDEN: Do NOT include: Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", or "Agentic AI". Explicitly ignore these.
 
 ==== CANDIDATE EXPERTISE SOURCE OF TRUTH ====
-Use these skills DYNAMICALLY to match any relevant JD requirement:
 - ML CORE: Python, ML Modeling, Data Analysis, Regression, feature engineering.
 - COMPUTER VISION (High-Tier): YOLOv8, Convolutional architectures, Hallucination detection & validation practice in Vision models.
 - ROBUSTNESS & SECURITY: Adversarial learning, robust model creation, research-to-implementation, Backdoor detection (TraceNet).
 - GEN AI/LLMS (Knowledge Level): Hallucination detection in LLMs, NLP, Basic RAG (Knowledge/POC level only).
 - TOOLS: SQL, PySpark, Git, Linux.
 
-==== OPTIMIZATION STRATEGY (TECHNICAL IMPACT) ====
-1. SUMMARY: 
+==== OPTIMIZATION STRATEGY (DYNAMIC ALIGNMENT) ====
+1. STRICT ALIGNMENT RULE: Do NOT bias the resume toward one niche (like Adversarial Learning) unless the JD explicitly asks for it. Dynamically select the 2-3 most relevant core skills from the "Source of Truth" above.
+2. SUMMARY: 
    - Rewrite into a 2-3 line technical hook. 
-   - Format: "Machine Learning Engineer with 3 years of experience specializing in [JD Keyword 1], [JD Keyword 2], and Python."
-   - Select and highlight the most relevant skills from the "Source of Truth" above.
-2. EXPERIENCE BULLETS: 
+   - Format: "Machine Learning Engineer with 3 years of experience specializing in [Most Relevant JD Category 1], [Most Relevant JD Category 2], and Python."
+3. EXPERIENCE BULLETS: 
    - Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Designed Frameworks").
-   - DYNAMIC MAPPING: Match JD requirements (e.g., 'Model Safety', 'Benchmarking', 'Non-deterministic systems') to candidate expertise in **Adversarial Learning**, **Vision Validation**, or **Research Implementation**.
-   - Example Context: If JD asks for 'Security', highlight 'Robustness & Security'. If JD asks for 'Productivity/QA', highlight 'Hallucination Detection'.
-3. RESEARCH & PROJECTS:
-   - Do NOT remove. Align the *descriptions* to match the job's domain. Use "TraceNet" or "Alice-Bob" to prove technical depth and implementation skills.
-4. SKILLS SECTION:
+   - DYNAMIC MAPPING: Match JD requirements (e.g., 'Model Safety', 'Benchmarking') to candidate expertise. If the JD is a general ML role, focus on 'ML CORE'. If IT is a Vision role, focus on 'COMPUTER VISION'.
+4. RESEARCH & PROJECTS:
+   - Do NOT remove. Align the *descriptions* to show technical depth relevant to the JD's industry or technical stack.
+5. SKILLS SECTION:
    - Organize: Programming, ML Systems, Machine Learning, Computer Vision, Frameworks, Tools.
-   - Maintain the existing LaTeX formatting (e.g., \\textbf{{Category:}}). Do NOT add extra bolding to keywords.
+   - Maintain the existing LaTeX formatting (e.g., \\textbf{{Category:}}). Do NOT add extra bolding.
 
 JOB DESCRIPTION:
 {jd}
