@@ -11,65 +11,44 @@ if not API_KEY:
     st.stop()
 
 MARKDOWN_ARTIFACTS = ["```latex", "```", "```python", "```text"]
+PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to adapt the candidate's resume for a specific Job Description (JD) with surgical precision. 
 
-PROMPT_TEMPLATE = """You are a LaTeX resume optimizer. Output ONLY raw LaTeX code. NO MARKDOWN.
+==== ABSOLUTE CONSTRANTS (CRITICAL) ====
+1. ONE PAGE LIMIT: The output MUST stay on one page. Do NOT increase the total number of words. If you add JD-specific keywords, you MUST delete less-relevant original text to maintain length.
+2. NO BLOATING: Do NOT add new bullet points. Do NOT extend the Summary beyond 3 short lines. Do NOT use multi-word adjectives (e.g., "highly skilled", "proven track record").
+3. RAW LATEX ONLY: Output ONLY the modified LaTeX code. NO markdown formatting. NO code fences (```). NO bold/italic asterisks.
+4. PRESERVE STRUCTURE: Keep all LaTeX commands (\\newcommand, \\usepackage, \\geometry, \\vspace, \\item) EXACTLY intact. ONLY modify the text inside the items or sections.
+5. STRICTLY FORBIDDEN: Do NOT include: Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", or "Agentic AI". Explicitly ignore these even if they are central to the JD.
 
-==== CORE WORKFLOW ====
-- Extract relevant keywords from JD (ignore metadata/headers)
-- Identify overlapping skills between JD and candidate's resume
-- Enhance summary and skills with JD-relevant keywords
-- Rewrite experience bullets to match JD language naturally
-- Keep ALL LaTeX structure, commands, and definitions intact
+==== CANDIDATE SKILL MATRIX ====
+- CORE EXPERTISE (High): Python, Machine Learning (ML), ML Modeling, Data Analysis, POC R&D, Data Cleansing, Regression, Decision Trees.
+- SECONDARY (Good): Computer Vision (YOLOv8, CLIP).
+- TOOLS/OTHER: SQL (Medium), PySpark, GenAI, LLMs, NLP, Basic RAG (Knowledge/POC level only).
 
-FOR OPTIMIZATION:
-1. Analyze JD keywords against candidate's actual skills:
-   - High Expertise: Python, Machine Learning (ML), Data Analysis, ML Modeling, POC Research & Development, Data Cleansing, Regression, Decision Trees
-   - Good Expertise: Computer Vision
-   - Medium Expertise: SQL
-   - Knowledge/Project-Level: PySpark, GenAI, LLMs, NLP, and Basic RAG (Candidate has knowledge/POC project experience only.  NOT for large-scale enterprise pipelines.)
-   - STRICTLY FORBIDDEN: Do NOT include Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", or "Agentic AI" (Candidate has NO experience for Agentic AI, so do NOT include even if it is mentioned in the JD).
-   - NO FLUFF: Strictly avoid generic adjectives like "Talented", "Highly Motivated", or "Passionate".
-   - CORE EXPERTISE ALIGNMENT: Prioritize the specific skills listed above. However, if the JD asks for standard ML/Data Analysis techniques (like Regression, Decision Trees, Data Cleansing, or Feature Engineering), you MUST include them as they are inherently part of the candidate's High Expertise in "Machine Learning (ML)" and "Data Analysis".
-
-2. Enhance Summary:
-   - Use a direct, technical headline. (e.g. "Machine Learning Engineer with 3 years..")
-   - strict - do not change years of experience, keep exact.
-   - Replace generic text with JD-specific keywords that MATCH the candidate's skills listed above.
-   - CRITICAL: If the JD asks for AWS/Azure/GCP, DO NOT mention them. Focus on Python/ML.
-   
-3. Enhance Skills Section:
-   Add JD keywords to the skills section if they align with the candidate's core domains (ML, CV, Python). Standard ML/Data techniques like Regression/Decision Trees should be included if present in the JD.
-   Organize: Programming, Tools, ML/CV, Domain Skills.
-   
-4. Enhance Experience:
-   Use JD keywords in existing bullet points.
-   CRITICAL: Modify ONLY plain text keywords to prevent breaking PDF. Do NOT add or remove \\item commands.
-   
-5. Keep All Definitions & Structure:
-   ALL \\newcommand definitions must be in output unchanged.
-   Do NOT remove or modify any LaTeX command definitions.
-
-==== ABSOLUTELY CRITICAL ====
-- strict - do not change years of experience, keep exact.
-Your entire output is INVALID if you use any markdown formatting such as:
-✗ Markdown bold (do NOT use double asterisks)
-✗ Markdown italic (do NOT use underscores)  
-✗ Markdown code blocks or fences
-✗ Markdown headers
-✗ Markdown bullets outside \item
+==== OPTIMIZATION STRATEGY (ADD "GOOD POINTS") ====
+1. SUMMARY: 
+   - Rewrite into a 2-3 line technical hook. 
+   - Format: "Machine Learning Engineer | 3 Years XP | Core Expertise in [JD Keyword 1], [JD Keyword 2], and Python."
+   - Focus on "Model Reliability", "Performance Optimization", and "Validation" (key for AI QA roles).
+2. EXPERIENCE BULLETS: 
+   - Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Designed Frameworks").
+   - MAP SKILLS: Use the candidate's High Expertise in "Regression" and "Data Analysis" to address JD needs like "Hallucination Detection" or "Model Quality Benchmarking".
+   - Example Change: "Improved model reliability" -> "Developed regression analysis pipelines for model quality benchmarking and hallucination detection."
+3. SKILLS SECTION:
+   - Organize: Programming, ML Systems, Machine Learning, Computer Vision, Frameworks, Tools.
+   - Inject JD keywords (e.g., "Hallucination Detection", "Model Safety", "Validation Frameworks") ONLY as they relate to the candidate's actual ML knowledge.
 
 JOB DESCRIPTION:
 {jd}
 
-RESUME LATEX (with ALL \\newcommand definitions):
+RESUME LATEX (Full Source):
 {resume}
 
-OUTPUT ONLY the modified LaTeX code:"""
+OUTPUT MODIFIED LATEX CODE:"""
 
 def clean_markdown(text: str) -> str:
     for artifact in MARKDOWN_ARTIFACTS:
         text = text.replace(artifact, "")
-    text = text.replace("**", "")
     return text.strip()
 
 def optimize_resume(jd: str, resume: str, model_id: str) -> str:
