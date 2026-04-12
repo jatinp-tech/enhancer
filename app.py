@@ -32,7 +32,7 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
 ==== OPTIMIZATION STRATEGY (ADD "GOOD POINTS") ====
 1. SUMMARY: 
    - Rewrite into a 2-3 line technical hook. 
-   - Format: "Machine Learning Engineer | 3 Years XP | Core Expertise in [JD Keyword 1], [JD Keyword 2], and Python."
+   - Format: "Machine Learning Engineer with 3 years of experience specializing in [JD Keyword 1], [JD Keyword 2], and Python."
    - Focus on "Model Reliability", "Performance Optimization", and "Validation" (key for AI QA roles).
 2. EXPERIENCE BULLETS: 
    - Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Designed Frameworks").
