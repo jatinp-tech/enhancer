@@ -26,7 +26,7 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
 
 ==== CANDIDATE SKILL MATRIX ====
 - CORE EXPERTISE (High): Python, Machine Learning (ML), ML Modeling, Data Analysis, POC R&D, Data Cleansing, Regression, feature engineering.
-- SECONDARY (Good): Computer Vision (YOLOv8, CLIP).
+- SECONDARY (Good): Computer Vision (YOLOv8, Convolutional architectures).
 - TOOLS/OTHER: SQL (Medium), PySpark, GenAI, LLMs, NLP, Basic RAG (Knowledge/POC level only).
 
 ==== OPTIMIZATION STRATEGY (ADD "GOOD POINTS") ====
