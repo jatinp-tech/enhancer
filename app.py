@@ -15,30 +15,34 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
 
 ==== ABSOLUTE CONSTRANTS (CRITICAL) ====
 1. ONE PAGE LIMIT: The output MUST stay on one page. Do NOT increase the word count. If you add text, you MUST delete original text to compensate.
-2. NO BLOATING: Do NOT add new bullet points. SUMMARY must be max 3 lines.
-3. RAW LATEX ONLY: Output ONLY pure LaTeX code. 
+2. NO SECTION REMOVAL: Do NOT remove any major sections (Summary, Experience, Projects, Research, Skills, Education). ALL sections must remain in the output.
+3. NO BLOATING: Do NOT add new bullet points. SUMMARY must be max 3 lines.
+4. RAW LATEX ONLY: Output ONLY pure LaTeX code. 
    - ✗ NO MARKDOWN BOLD (Do NOT use **keyword**)
-   - ✗ NO MARKDOWN ITALIC (Do NOT use _keyword_)
-   - ✗ NO CODE FENCES (Do NOT use ```latex or ```)
-   - ⚠️ YOUR ENTIRE OUTPUT IS INVALID AND UNUSABLE IF IT CONTAINS ANY DOUBLE ASTERISKS (**).
-4. PRESERVE STRUCTURE: Keep all LaTeX commands (\\newcommand, \\usepackage, \\geometry, \\vspace, \\item) EXACTLY intact. ONLY modify plain text.
-5. STRICTLY FORBIDDEN: Do NOT include: Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", or "Agentic AI". Explicitly ignore these.
+   - ⚠️ YOUR ENTIRE OUTPUT IS INVALID IF IT CONTAINS ANY DOUBLE ASTERISKS (**).
+5. PRESERVE STRUCTURE: Keep all LaTeX commands (\\newcommand, \\usepackage, \\geometry, \\vspace, \\item) EXACTLY intact. ONLY modify plain text.
+6. STRICTLY FORBIDDEN: Do NOT include: Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", or "Agentic AI". Explicitly ignore these.
 
-==== CANDIDATE SKILL MATRIX ====
-- CORE EXPERTISE (High): Python, Machine Learning (ML), ML Modeling, Data Analysis, POC R&D, Data Cleansing, Regression, feature engineering.
-- SECONDARY (Good): Computer Vision (YOLOv8, Convolutional architectures).
-- TOOLS/OTHER: SQL (Medium), PySpark, GenAI, LLMs, NLP, Basic RAG (Knowledge/POC level only).
+==== CANDIDATE EXPERTISE SOURCE OF TRUTH ====
+Use these skills DYNAMICALLY to match any relevant JD requirement:
+- ML CORE: Python, ML Modeling, Data Analysis, Regression, feature engineering.
+- COMPUTER VISION (High-Tier): YOLOv8, Convolutional architectures, Hallucination detection & validation practice in Vision models.
+- ROBUSTNESS & SECURITY: Adversarial learning, robust model creation, research-to-implementation, Backdoor detection (TraceNet).
+- GEN AI/LLMS (Knowledge Level): Hallucination detection in LLMs, NLP, Basic RAG (Knowledge/POC level only).
+- TOOLS: SQL, PySpark, Git, Linux.
 
-==== OPTIMIZATION STRATEGY (ADD "GOOD POINTS") ====
+==== OPTIMIZATION STRATEGY (TECHNICAL IMPACT) ====
 1. SUMMARY: 
    - Rewrite into a 2-3 line technical hook. 
    - Format: "Machine Learning Engineer with 3 years of experience specializing in [JD Keyword 1], [JD Keyword 2], and Python."
-   - Focus on "Model Reliability", "Performance Optimization", and "Validation" (key for AI QA roles).
+   - Select and highlight the most relevant skills from the "Source of Truth" above.
 2. EXPERIENCE BULLETS: 
    - Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Designed Frameworks").
-   - MAP SKILLS: Use "Regression" and "feature engineering" to address JD needs like "Hallucination Detection" or "Model Quality Benchmarking".
-   - Example Change: "Improved model reliability" -> "Developed regression analysis pipelines for model quality benchmarking and hallucination detection."
-3. SKILLS SECTION:
+   - DYNAMIC MAPPING: Match JD requirements (e.g., 'Model Safety', 'Benchmarking', 'Non-deterministic systems') to candidate expertise in **Adversarial Learning**, **Vision Validation**, or **Research Implementation**.
+   - Example Context: If JD asks for 'Security', highlight 'Robustness & Security'. If JD asks for 'Productivity/QA', highlight 'Hallucination Detection'.
+3. RESEARCH & PROJECTS:
+   - Do NOT remove. Align the *descriptions* to match the job's domain. Use "TraceNet" or "Alice-Bob" to prove technical depth and implementation skills.
+4. SKILLS SECTION:
    - Organize: Programming, ML Systems, Machine Learning, Computer Vision, Frameworks, Tools.
    - Use \\textbf{{Keyword}} for emphasis within LaTeX, NEVER markdown **.
 
