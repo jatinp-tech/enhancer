@@ -14,14 +14,18 @@ MARKDOWN_ARTIFACTS = ["```latex", "```", "```python", "```text"]
 PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to adapt the candidate's resume for a specific Job Description (JD) with surgical precision. 
 
 ==== ABSOLUTE CONSTRANTS (CRITICAL) ====
-1. ONE PAGE LIMIT: The output MUST stay on one page. Do NOT increase the total number of words. If you add JD-specific keywords, you MUST delete less-relevant original text to maintain length.
-2. NO BLOATING: Do NOT add new bullet points. Do NOT extend the Summary beyond 3 short lines. Do NOT use multi-word adjectives (e.g., "highly skilled", "proven track record").
-3. RAW LATEX ONLY: Output ONLY the modified LaTeX code. NO markdown formatting. NO code fences (```). NO bold/italic asterisks.
-4. PRESERVE STRUCTURE: Keep all LaTeX commands (\\newcommand, \\usepackage, \\geometry, \\vspace, \\item) EXACTLY intact. ONLY modify the text inside the items or sections.
-5. STRICTLY FORBIDDEN: Do NOT include: Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", or "Agentic AI". Explicitly ignore these even if they are central to the JD.
+1. ONE PAGE LIMIT: The output MUST stay on one page. Do NOT increase the word count. If you add text, you MUST delete original text to compensate.
+2. NO BLOATING: Do NOT add new bullet points. SUMMARY must be max 3 lines.
+3. RAW LATEX ONLY: Output ONLY pure LaTeX code. 
+   - ✗ NO MARKDOWN BOLD (Do NOT use **keyword**)
+   - ✗ NO MARKDOWN ITALIC (Do NOT use _keyword_)
+   - ✗ NO CODE FENCES (Do NOT use ```latex or ```)
+   - ⚠️ YOUR ENTIRE OUTPUT IS INVALID AND UNUSABLE IF IT CONTAINS ANY DOUBLE ASTERISKS (**).
+4. PRESERVE STRUCTURE: Keep all LaTeX commands (\\newcommand, \\usepackage, \\geometry, \\vspace, \\item) EXACTLY intact. ONLY modify plain text.
+5. STRICTLY FORBIDDEN: Do NOT include: Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", or "Agentic AI". Explicitly ignore these.
 
 ==== CANDIDATE SKILL MATRIX ====
-- CORE EXPERTISE (High): Python, Machine Learning (ML), ML Modeling, Data Analysis, POC R&D, Data Cleansing, Regression, Decision Trees.
+- CORE EXPERTISE (High): Python, Machine Learning (ML), ML Modeling, Data Analysis, POC R&D, Data Cleansing, Regression, feature engineering.
 - SECONDARY (Good): Computer Vision (YOLOv8, CLIP).
 - TOOLS/OTHER: SQL (Medium), PySpark, GenAI, LLMs, NLP, Basic RAG (Knowledge/POC level only).
 
@@ -32,11 +36,11 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
    - Focus on "Model Reliability", "Performance Optimization", and "Validation" (key for AI QA roles).
 2. EXPERIENCE BULLETS: 
    - Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Designed Frameworks").
-   - MAP SKILLS: Use the candidate's High Expertise in "Regression" and "Data Analysis" to address JD needs like "Hallucination Detection" or "Model Quality Benchmarking".
+   - MAP SKILLS: Use "Regression" and "feature engineering" to address JD needs like "Hallucination Detection" or "Model Quality Benchmarking".
    - Example Change: "Improved model reliability" -> "Developed regression analysis pipelines for model quality benchmarking and hallucination detection."
 3. SKILLS SECTION:
    - Organize: Programming, ML Systems, Machine Learning, Computer Vision, Frameworks, Tools.
-   - Inject JD keywords (e.g., "Hallucination Detection", "Model Safety", "Validation Frameworks") ONLY as they relate to the candidate's actual ML knowledge.
+   - Use \\textbf{{Keyword}} for emphasis within LaTeX, NEVER markdown **.
 
 JOB DESCRIPTION:
 {jd}
