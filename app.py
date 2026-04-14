@@ -37,7 +37,8 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
 1. STRICT ALIGNMENT RULE: Do NOT bias the resume toward one niche (like Adversarial Learning) unless the JD explicitly asks for it. Dynamically select the 2-3 most relevant core skills from the "Source of Truth" above.
 2. SUMMARY: 
    - Rewrite into a 2-3 line technical hook. 
-   - Format: "Machine Learning Engineer with 3 years of experience specializing in [Most Relevant JD Category 1], [Most Relevant JD Category 2], and Python."
+   - Format: "Machine Learning Engineer with 3 years of experience specializing in [Core Skill from Source of Truth 1], [Core Skill from Source of Truth 2], and Python."
+   - DO NOT use hyper-niche JD phrases (like "SQL Generation Quality") in the summary. Choose the candidate's ACTUAL core engineering skills (e.g., Computer Vision, ML Modeling, Robustness) that best align with the JD.
 3. EXPERIENCE BULLETS (ATS OPTIMIZATION): 
    - KEYWORD INTEGRATION: Naturally weave EXACT keywords and phrases from the Job Description (tools, algorithms, methodologies) into the bullet points to maximize ATS scoring.
    - ACTION VERBS: Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Designed Frameworks").
