@@ -23,6 +23,7 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
 5. PRESERVE STRUCTURE: Keep all LaTeX commands (\\newcommand, \\usepackage, \\geometry, \\vspace, \\item) EXACTLY intact. ONLY modify plain text.
 6. STRICTLY FORBIDDEN: Do NOT include: Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", or "Agentic AI". Explicitly ignore these.
 7. NO TITLE CHANGE: Do NOT change the candidate's existing job profile title/role. It MUST remain EXACTLY as it is in the original resume.
+8. NO HALLUCINATION/FABRICATION: Do NOT invent or fabricate any entirely new projects, jobs, or experiences. You may rephrase descriptions to align with the JD, but the core facts, metrics, and Project Titles MUST reflect the original resume.
 
 
 ==== CANDIDATE EXPERTISE SOURCE OF TRUTH ====
