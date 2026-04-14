@@ -22,6 +22,8 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
    - ⚠️ YOUR ENTIRE OUTPUT IS INVALID IF IT CONTAINS ANY DOUBLE ASTERISKS (**).
 5. PRESERVE STRUCTURE: Keep all LaTeX commands (\\newcommand, \\usepackage, \\geometry, \\vspace, \\item) EXACTLY intact. ONLY modify plain text.
 6. STRICTLY FORBIDDEN: Do NOT include: Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", or "Agentic AI". Explicitly ignore these.
+7. NO TITLE CHANGE: Do NOT change the candidate's existing job profile title/role. It MUST remain EXACTLY as it is in the original resume.
+
 
 ==== CANDIDATE EXPERTISE SOURCE OF TRUTH ====
 - ML CORE: Python, ML Modeling, Data Analysis, Regression, feature engineering.
