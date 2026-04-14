@@ -36,9 +36,9 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
 ==== OPTIMIZATION STRATEGY (DYNAMIC ALIGNMENT) ====
 1. STRICT ALIGNMENT RULE: Do NOT bias the resume toward one niche (like Adversarial Learning) unless the JD explicitly asks for it. Dynamically select the 2-3 most relevant core skills from the "Source of Truth" above.
 2. SUMMARY: 
-   - Rewrite into a 2-3 line technical hook. 
-   - Format: "Machine Learning Engineer with 3 years of experience specializing in [Core Skill from Source of Truth 1], [Core Skill from Source of Truth 2], and Python."
-   - DO NOT use hyper-niche JD phrases (like "SQL Generation Quality") in the summary. Choose the candidate's ACTUAL core engineering skills (e.g., Computer Vision, ML Modeling, Robustness) that best align with the JD.
+   - Do NOT bias the summary towards the JD. Do NOT include JD-specific niche keywords in the summary.
+   - Keep the summary strictly grounded in the candidate's general ML engineering expertise based ONLY on the "Source of Truth".
+   - It should read as a strong, general ML profile (e.g., "Machine Learning Engineer with 3 years of experience specializing in Computer Vision, Machine Learning Modeling, and Python...").
 3. EXPERIENCE BULLETS (ATS OPTIMIZATION): 
    - KEYWORD INTEGRATION: Naturally weave EXACT keywords and phrases from the Job Description (tools, algorithms, methodologies) into the bullet points to maximize ATS scoring.
    - ACTION VERBS: Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Designed Frameworks").
