@@ -50,8 +50,8 @@
 
 % Sections formatting
 \titleformat{\section}{
-  \vspace{-2pt}\scshape\raggedright\large
-}{}{0em}{}[\color{black}\titlerule \vspace{-10pt}]
+  \vspace{-6pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-12pt}]
 
 %-------------------------
 % Custom commands
@@ -79,7 +79,7 @@
 }
 
 \newcommand{\resumeProject}[2]{
-\vspace{0.3 mm}\item
+\vspace{0 mm}\item
     \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
         #1 & \footnotesize{#2} \\
     \end{tabular*}
@@ -92,7 +92,7 @@
         \textbf{#1} & \text{\footnotesize{#2}} \\
         \large{#3}
     \end{tabular*}
-    \vspace{-6.7 mm}
+    \vspace{-7 mm}
 }
 
 % \newcommand{\resumeSubItem}[2]{#1: #2\vspace{0.8pt}}
@@ -170,8 +170,7 @@
 
       \item{Debugged production issues across model inference and data pipelines, ensuring system stability and performance.}
       \resumeItemListEnd
-
-
+    \vspace{-2mm}
     \resumeProject
       {\textbf{Machine Learning Engineer} | CIPL | Noida, Uttar Pradesh}
       {July 2023 - July 2025}
@@ -192,23 +191,21 @@
   \item #1 : {\small #2} \vspace{-2mm}
 }
 
-
 \section{\textbf{Projects}}
 \vspace{2mm}
 \begin{itemize}[leftmargin=0.15in]
 
 \resumeProjectNoItemNoDate
-{TraceNet – Backdoor Detection Framework}
-{Developed a scalable gradient-based detection system for identifying backdoor attacks; improved detection speed by 10× on benchmark datasets.}
-
-\resumeProjectNoItemNoDate
 {Retail Product Recognition System}
-{Built end-to-end CV pipelines using YOLOv8 and CLIP embeddings; evaluated trade-offs between accuracy, latency, and scalability for production use.}
+{Implemented YOLOv8 for detection and CLIP/DINO embeddings for similarity-based retrieval; compared open-set and closed-set approaches on a custom dataset to evaluate accuracy and latency trade-offs.}
 
 \resumeProjectNoItemNoDate
-{Adversarial Neural Cryptosystem}
-{Designed and trained a neural network–based encoder–decoder system that transforms plaintext into encrypted data, generating highly randomized bit patterns and achieving 99.9\% secure communication accuracy with validated randomness properties.
-.}
+{RAG-based Liquor Brand Recognition System}
+{Built a retrieval pipeline using embeddings (OpenAI text-embedding-3) and FAISS to match liquor brands; used GPT-4.1 for structured data extraction and worked with Neo4j-based search integration.}
+
+\resumeProjectNoItemNoDate
+{Model Monitoring \& Drift Analysis System}
+{Designed a pipeline to track client-wise confidence and brand-level distributions; analyzed weekly trends to detect shifts in model behavior and potential data drift.}
 
 \resumeProjectNoItemNoDate
   {Hospital Readmission Prediction (HCUP 2016)}
@@ -225,7 +222,7 @@
     \item Conducted research to detect and interpret backdoor attacks, achieving 10x faster detection speed than baseline methods while maintaining high accuracy and enhancing interpretability.
     \item Submitted work to IEEE conference focusing on scalable, interpretable AI security aligned with incident response best practices; experimental evaluation on 3 public datasets.
   \resumeItemListEnd
-
+\vspace{-2mm}
 \resumeProjectP
   {Adversarial Neural Cryptography: Security Challenges and Solutions}{ICMC 2025 -- IIT Bhilai}{}
   \resumeItemListStart
