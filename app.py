@@ -25,8 +25,9 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
    - DO NOT modify LaTeX syntax, commands, brackets, or structure.
 6. STRICTLY FORBIDDEN: Do NOT include: Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", "Agentic AI", "R", or "R language". Explicitly ignore these.
 7. NO TITLE CHANGE: Do NOT change the candidate's existing job profile title/role. It MUST remain EXACTLY as it is in the original resume.
-8. NO HALLUCINATION/FABRICATION: Do NOT invent or fabricate any entirely new projects, jobs, or experiences. You may rephrase descriptions to align with the JD, but the core facts, metrics, and Project Titles MUST reflect the original resume.
+8. NO HALLUCINATION/FABRICATION: Do NOT invent, rename, or substitute ANY project, job, or experience. Project titles MUST be copied VERBATIM from the original resume. You may only rephrase bullet descriptions — never the title itself.
 9. LAYOUT PRESERVATION: Do NOT change spacing, formatting, or line structure that could affect the one-page layout.
+10. BULLET COUNT ENFORCEMENT: Count bullets per role/project in the original before writing. The output MUST have the EXACT same count. Do NOT silently drop or merge any bullet.
 
 
 ==== CANDIDATE EXPERTISE SOURCE OF TRUTH ====
@@ -38,19 +39,23 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
 
 ==== OPTIMIZATION STRATEGY (DYNAMIC ALIGNMENT) ====
 1. STRICT ALIGNMENT RULE: Do NOT bias the resume toward one niche (like Adversarial Learning) unless the JD explicitly asks for it. Dynamically select the 2-3 most relevant core skills from the "Source of Truth" above.
-2. SUMMARY: 
-   - Do NOT bias the summary towards the JD. Do NOT include JD-specific niche keywords in the summary.
-   - Keep the summary strictly grounded in the candidate's general ML engineering expertise based ONLY on the "Source of Truth".
-   - It should read as a strong, general ML profile.
-3. EXPERIENCE BULLETS (ATS OPTIMIZATION): 
+2. SUMMARY:
+   - Keep the summary grounded in the candidate's general ML engineering expertise based on the "Source of Truth".
+   - You MAY naturally weave 2-3 of the most important required keywords from the JD into the summary — ONLY if they reflect real candidate skills. Do NOT force-fit unrelated terms.
+   - The summary must read as a strong, coherent, human-written profile — NOT a keyword list.
+   - Do NOT add \\textbf{{}} bolding to ANY word inside the Summary. Plain text only.
+3. EXPERIENCE BULLETS (ATS OPTIMIZATION):
    - KEYWORD INTEGRATION: Naturally weave EXACT keywords and phrases from the Job Description (tools, algorithms, methodologies) into the bullet points to maximize ATS scoring.
    - ACTION VERBS: Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Designed Frameworks").
-   - DYNAMIC MAPPING: Match JD requirements (e.g., 'Model Safety', 'Benchmarking') to candidate expertise. If the JD is a general ML role, focus on 'ML CORE'. If it is a Vision role, focus on 'COMPUTER VISION'.
+   - DYNAMIC MAPPING: Match JD requirements to candidate expertise. If the JD is a general ML role, focus on 'ML CORE'. If it is a Vision role, focus on 'COMPUTER VISION'.
    - Ensure all keyword integration feels natural and human-written. Avoid keyword stuffing or unnatural phrasing.
+   - FORBIDDEN FILLER PHRASES: Do NOT use the following unless the JD itself uses them: "Technical Excellence", "Investigations", "Data Insights", "Compliance", "Integrity", "Forensics". These are not ATS-scorable skills.
 4. RESEARCH & PROJECTS:
-   - Do NOT remove. Align the descriptions to show technical depth relevant to the JD's industry or technical stack.
+   - Do NOT remove. Align bullet DESCRIPTIONS (not titles) to show technical depth relevant to the JD.
+   - Project titles MUST remain VERBATIM. Do NOT rename, rephrase, or swap any project title.
 5. SKILLS SECTION:
-   - Organize: Programming, ML Systems, Machine Learning, Computer Vision, Frameworks, Tools.
+   - Use ONLY these EXACT category headers: Programming, ML Systems, Machine Learning, Deep Learning, Computer Vision, Frameworks, Tools.
+   - Do NOT invent new category names (e.g., "Technical Excellence", "Data Expertise").
    - Maintain the existing LaTeX formatting (e.g., \\textbf{{Category:}}). Do NOT add extra bolding.
 
 JOB DESCRIPTION:
