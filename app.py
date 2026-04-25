@@ -11,7 +11,7 @@ if not API_KEY:
     st.stop()
 
 MARKDOWN_ARTIFACTS = ["```latex", "```", "```python", "```text"]
-PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to adapt the candidate's resume for a specific Job Description (JD) with surgical precision. 
+PROMPT_TEMPLATE = r"""You are an elite LaTeX Resume Optimizer. Your mission is to adapt the candidate's resume for a specific Job Description (JD) with surgical precision. 
 
 ==== ABSOLUTE CONSTRAINTS (CRITICAL) ====
 1. PAGE LIMIT & CONTENT RETENTION: The output MUST stay on one page. HOWEVER, you MUST preserve the approximate length, detail, and technical depth of the original resume. Do NOT over-summarize or aggressively cut content. Do NOT reduce content density.
@@ -43,7 +43,7 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
    - Keep the summary grounded in the candidate's general ML engineering expertise based on the "Source of Truth".
    - You MAY naturally weave 2-3 of the most important required keywords from the JD into the summary — ONLY if they reflect real candidate skills. Do NOT force-fit unrelated terms.
    - The summary must read as a strong, coherent, human-written profile — NOT a keyword list.
-   - Do NOT add \textbf{} bolding to ANY word inside the Summary. Plain text only.
+   - Do NOT add \textbf{{}} bolding to ANY word inside the Summary. Plain text only.
 3. EXPERIENCE BULLETS (ATS OPTIMIZATION):
    - KEYWORD INTEGRATION: Naturally weave EXACT keywords and phrases from the Job Description (tools, algorithms, methodologies) into the bullet points to maximize ATS scoring.
    - ACTION VERBS: Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Architected").
@@ -56,7 +56,7 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
 5. SKILLS SECTION:
    - Use ONLY these EXACT category headers: Programming, Machine Learning, Deep Learning, ML Systems, Frameworks / Libraries, Tools.
    - Do NOT invent new category names (e.g., "Technical Excellence", "Data Expertise").
-   - Maintain the existing LaTeX formatting (e.g., \textbf{Category:}). Do NOT add extra bolding.
+   - Maintain the existing LaTeX formatting (e.g., \textbf{{Category:}}). Do NOT add extra bolding.
 
 JOB DESCRIPTION:
 {jd}
