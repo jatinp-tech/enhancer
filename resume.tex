@@ -89,7 +89,7 @@
 \newcommand{\resumeProjectP}[3]{
 \vspace{0.1 mm}\item
     \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
-        \textbf{#1} & \text{\footnotesize{#2}} \\
+        \text{#1} & \text{\footnotesize{#2}} \\
         \large{#3}
     \end{tabular*}
     \vspace{-7 mm}
@@ -155,35 +155,32 @@
 %-----------EXPERIENCE-----------------
 \section{\textbf{Work Experience}}
  \resumeProject
-  {\textbf{Machine Learning Engineer} | Droisys | Noida, Uttar Pradesh}
+     {\textbf{Machine Learning Engineer} | Droisys | Noida, Uttar Pradesh}
     {August 2025 – Present}
-      \resumeItemListStart
-      \item{Designed and deployed a YOLOv8-based object detection system for retail brand recognition in production environments.}
-
-      \item{Improved inference latency by 25–40\% through optimization of preprocessing pipelines, batching strategies, and efficient resource utilization.}
-
-      \item{Built scalable data pipelines for auto-annotation, dataset versioning, and few-shot labeling.}
-
-      \item{Incorporated object shape-based training techniques to handle blurry and arbitrarily oriented samples, improving detection robustness in real-world scenarios.}
-
-      \item{Implemented model evaluation and confidence-based filtering mechanisms to detect low-quality predictions, improving system reliability.}
-
-      \item{Debugged production issues across model inference and data pipelines, ensuring system stability and performance.}
-      \resumeItemListEnd
+        \resumeItemListStart
+        \item{Designed and deployed production-grade machine learning pipelines for retail and liquor product recognition in Account360.}
+        \item{Reduced inference latency by 25--40\% by optimizing preprocessing pipelines, introducing GPU batching, and modifying existing FastAPI endpoints to handle asynchronous requests efficiently.}
+        \item{Developed a few-shot auto-annotation pipeline that reduced manual data annotation effort by 80\% and accelerated dataset preparation.}
+        \item{Improved model robustness on blurry and rotated product images by fine-tuning object shape-based detection models with adversarial examples.}
+        \item{Improved training and experimentation speed by restructuring legacy code, enabling faster iteration and easier deployment.}
+        \item{Maintained and debugged production pipelines running on local GPU servers, with image data fetched from AWS S3 buckets.}
+        \item{Implemented data quality checks using annotation heuristics and Isolation Forest-based anomaly detection to identify potentially misannotated or low-quality training samples.}
+        \resumeItemListEnd
+        
     \vspace{-2mm}
     \resumeProject
-      {\textbf{Machine Learning Engineer} | CIPL | Noida, Uttar Pradesh}
+      {\textbf{Software Developer} | CIPL | Noida, Uttar Pradesh}
       {July 2023 - July 2025}
         \resumeItemListStart
-        \item{Developed and evaluated ML models for cryptographic analysis, simulating large-scale prediction attacks on 50+ cipher systems.}
+        \item{Implemented and evaluated machine learning models for cryptographic analysis and attack simulation across 50+ cipher systems.}
+        \item{Conducted research-driven experimentation by implementing differential cryptanalysis techniques and analyzing multiple cryptographic algorithms.}
         
-        \item{Designed a neural cryptosystem (Alice–Bob–Eve) achieving >99\% accuracy, demonstrating secure communication via learned representations.}
+        \item{Designed and evaluated neural network architectures for secure communication and near-random ciphertext generation.}
         
-        \item{Built evaluation pipelines using NIST test suites to validate randomness and model robustness.}
+        \item{Built evaluation pipelines using NIST statistical test suites to validate randomness, robustness, and model performance.}
         
-        \item{Applied adversarial ML techniques (FGSM, PGD) to analyze vulnerabilities and improve model robustness.}
+        \item{Applied adversarial machine learning techniques such as FGSM and PGD to analyze vulnerabilities and improve model robustness.}
         
-        \item{Led development of a backdoor detection framework (TraceNet), focusing on scalable and interpretable ML security solutions.}
         \resumeItemListEnd
     \vspace{-3mm}    
 
@@ -196,58 +193,51 @@
 \begin{itemize}[leftmargin=0.15in]
 
 \resumeProjectNoItemNoDate
-{Retail Product Recognition System}
-{Implemented YOLOv8 for detection and CLIP/DINO embeddings for similarity-based retrieval; compared open-set and closed-set approaches on a custom dataset to evaluate accuracy and latency trade-offs.}
+{Embedding-based Product Recognition System}
+{Trained a ConvNeXt model with ArcFace loss for similarity-based product retrieval, improving embedding discrimination and reducing retraining requirements for new brands.}
 
 \resumeProjectNoItemNoDate
 {RAG-based Liquor Brand Recognition System}
-{Built a retrieval pipeline using embeddings (OpenAI text-embedding-3) and FAISS to match liquor brands; used GPT-4.1 for structured data extraction and worked with Neo4j-based search integration.}
+{Built a retrieval-based liquor brand matching pipeline using OpenAI text-embedding-3 and GPT-4.1 for structured data extraction, with Neo4j-based search integration.}
+
+\resumeProjectNoItemNoDate
+{Retail Product Recognition System}
+{{Explored detection-based and embedding-based approaches for product recognition using YOLOv8 and CLIP/DINO embeddings, comparing accuracy and inference speed on a custom dataset.}.}
 
 \resumeProjectNoItemNoDate
 {Model Monitoring \& Drift Analysis System}
-{Designed a pipeline to track client-wise confidence and brand-level distributions; analyzed weekly trends to detect shifts in model behavior and potential data drift.}
-
-\resumeProjectNoItemNoDate
-  {Hospital Readmission Prediction (HCUP 2016)}
-  {Analyzed highly imbalanced (98:2) patient data to model readmission risk; delivered actionable insights in collaboration with University of Florida.}
+{Built a Streamlit-based monitoring dashboard to track prediction confidence, brand-level distributions, and detect model drift using weekly trend analysis.}
 \end{itemize}
 
-
 % \vspace{-3 mm}
-\section{\textbf{Research}}
+\section{\textbf{Publications}}
 % \vspace{0 mm}
 \resumeProjectP
-  {Backdoor Detection in Deep Neural Networks (TraceNet)}{IEEE (ICDSINC, NIT Raipur) 2025}{}
-  \resumeItemListStart
-    \item Conducted research to detect and interpret backdoor attacks, achieving 10x faster detection speed than baseline methods while maintaining high accuracy and enhancing interpretability.
-    \item Submitted work to IEEE conference focusing on scalable, interpretable AI security aligned with incident response best practices; experimental evaluation on 3 public datasets.
-  \resumeItemListEnd
+{TraceNet: Backdoor Detection in Deep Neural Networks}
+{IEEE ICDSINC, NIT Raipur, 2025}{}
+\resumeItemListStart
+\item{Developed a framework to detect hidden backdoor patterns and anomalous behavior in image datasets using gradient-based analysis, achieving 10x faster detection than baseline methods.}
+\resumeItemListEnd
 \vspace{-2mm}
+
 \resumeProjectP
-  {Adversarial Neural Cryptography: Security Challenges and Solutions}{ICMC 2025 -- IIT Bhilai}{}
-  \resumeItemListStart
-    \item Presented findings analyzing vulnerabilities and robustness of neural cryptosystems under adversarial attacks, reducing model distinguishability to 50\%.
-    \item Attained nearly 100\% plaintext retrieval accuracy by Bob from ciphertext, demonstrating strong cryptosystem reliability and effective mitigation of information leakage.
-  \resumeItemListEnd
+{Adversarial Neural Cryptography: Security Challenges and Solutions}
+{ICMC, IIT Bhilai, 2025}{}
+\resumeItemListStart
+\item{Designed and analyzed a neural cryptography system that learned to generate near-random encrypted data and securely reconstruct original information without traditional encryption algorithms.}
+\resumeItemListEnd
+  
 \vspace{-4 mm}
 \section{\textbf{Skills}}
 \vspace{2 mm}
 \resumeItemListStart
 \item{\textbf{Programming:} Python, SQL}
-
-\item{\textbf{ML Systems:} Model Deployment, Model Evaluation, Data Pipelines, Debugging, Performance Optimization}
-
-\item{\textbf{Machine Learning:} Supervised Learning, Clustering, PCA, XGBoost, SVM}
-
+\item{\textbf{Machine Learning:} Supervised Learning, Clustering, PCA, XGBoost, SVM, Metric Learning}
 \item{\textbf{Deep Learning:} CNNs, GANs, LSTMs, Transfer Learning}
-
-\item{\textbf{Computer Vision:} Object Detection (YOLO), Image Classification, Feature Extraction}
-
-\item{\textbf{Frameworks:} PyTorch, TensorFlow, Scikit-learn, OpenCV}
-
-\item{\textbf{Tools:} Git, Jupyter, Linux}
+\item{\textbf{ML Systems:} Model Deployment, Model Evaluation, Data Pipelines, Inference Optimization, Debugging}
+\item{\textbf{Frameworks / Libraries:} PyTorch, TensorFlow, Scikit-learn, OpenCV, FastAPI, Streamlit}
+\item{\textbf{Tools:} Git, Linux, Jupyter Notebook}
 \resumeItemListEnd
-
 
 %-----------EDUCATION-----------------
 \vspace{-5 mm}
