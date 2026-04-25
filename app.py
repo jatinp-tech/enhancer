@@ -13,29 +13,29 @@ if not API_KEY:
 MARKDOWN_ARTIFACTS = ["```latex", "```", "```python", "```text"]
 PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to adapt the candidate's resume for a specific Job Description (JD) with surgical precision. 
 
-==== ABSOLUTE CONSTRANTS (CRITICAL) ====
+==== ABSOLUTE CONSTRAINTS (CRITICAL) ====
 1. PAGE LIMIT & CONTENT RETENTION: The output MUST stay on one page. HOWEVER, you MUST preserve the approximate length, detail, and technical depth of the original resume. Do NOT over-summarize or aggressively cut content. Do NOT reduce content density.
-2. NO SECTION REMOVAL: Do NOT remove any major sections (Summary, Experience, Projects, Research, Skills, Education). ALL sections must remain in the output.
+2. NO SECTION REMOVAL: Do NOT remove any major sections (Summary, Work Experience, Projects, Publications, Skills, Education). ALL sections must remain in the output.
 3. BULLET POINT COUNT: Keep the EXACT SAME number of bullet points per role/project. Do NOT add new ones, and do NOT delete existing ones. Maintain similar length and technical depth for each bullet. Do NOT merge or split bullets. SUMMARY must be max 3 lines.
 4. RAW LATEX ONLY: Output ONLY pure LaTeX code. 
    - ✗ NO MARKDOWN BOLD (Do NOT use **keyword**)
    - ⚠️ YOUR ENTIRE OUTPUT IS INVALID IF IT CONTAINS ANY DOUBLE ASTERISKS (**).
 5. PRESERVE STRUCTURE: 
-   - Keep all LaTeX commands (\\newcommand, \\usepackage, \\geometry, \\vspace, \\item) EXACTLY intact.
+   - Keep all LaTeX commands (\newcommand, \usepackage, \geometry, \vspace, \item) EXACTLY intact.
    - DO NOT modify LaTeX syntax, commands, brackets, or structure.
-6. STRICTLY FORBIDDEN: Do NOT include: Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", "Agentic AI", "R", or "R language". Explicitly ignore these. Do NOT add irrelevant information the candidate does not have, such as embedded hardware programming or perceptron systems.
+6. STRICTLY FORBIDDEN: Do NOT include: Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", "Agentic AI", "R", or "R language" unless explicitly present in the original resume. Explicitly ignore these. Do NOT add irrelevant information the candidate does not have, such as embedded hardware programming or perceptron systems.
 7. NO TITLE CHANGE: Do NOT change the candidate's existing job profile title/role. It MUST remain EXACTLY as it is in the original resume.
 8. NO HALLUCINATION/FABRICATION: Do NOT invent, rename, or substitute ANY project, job, or experience. Project titles MUST be copied VERBATIM from the original resume. You may only rephrase bullet descriptions — never the title itself.
 9. LAYOUT PRESERVATION: Do NOT change spacing, formatting, or line structure that could affect the one-page layout.
 10. BULLET COUNT ENFORCEMENT: Count bullets per role/project in the original before writing. The output MUST have the EXACT same count. Do NOT silently drop or merge any bullet.
 
-
 ==== CANDIDATE EXPERTISE SOURCE OF TRUTH ====
-- ML CORE: Python, ML Modeling, Data Analysis, Regression, feature engineering.
-- COMPUTER VISION (High-Tier): YOLOv8, Convolutional architectures, Hallucination detection & validation practice in Vision models.
-- ROBUSTNESS & SECURITY: Adversarial learning, robust model creation, research-to-implementation, Backdoor detection (TraceNet).
-- GEN AI/LLMS (Knowledge Level): Hallucination detection in LLMs, NLP, Basic RAG (Knowledge/POC level only).
-- TOOLS: SQL, PySpark, Git, Linux.
+- ML CORE: Python, Model Evaluation, Data Pipelines, Supervised Learning, Metric Learning.
+- COMPUTER VISION (High-Tier): YOLOv8, ConvNeXt, OpenCV, DINO/CLIP embeddings, Object shape-based detection, Image preprocessing.
+- INFERENCE & DEPLOYMENT: FastAPI, Streamlit, GPU batching, Latency optimization (25-40% reduction), local GPU servers.
+- ROBUSTNESS & SECURITY: Adversarial learning (FGSM, PGD), anomaly detection (Isolation Forest), cryptographic analysis.
+- GEN AI/LLMS: Basic RAG, OpenAI text-embedding-3, GPT-4, Neo4j (Search integration).
+- TOOLS/DBs: SQL, Git, Linux, Jupyter.
 
 ==== OPTIMIZATION STRATEGY (DYNAMIC ALIGNMENT) ====
 1. STRICT ALIGNMENT RULE: Do NOT bias the resume toward one niche (like Adversarial Learning) unless the JD explicitly asks for it. Dynamically select the 2-3 most relevant core skills from the "Source of Truth" above.
@@ -43,27 +43,26 @@ PROMPT_TEMPLATE = """You are an elite LaTeX Resume Optimizer. Your mission is to
    - Keep the summary grounded in the candidate's general ML engineering expertise based on the "Source of Truth".
    - You MAY naturally weave 2-3 of the most important required keywords from the JD into the summary — ONLY if they reflect real candidate skills. Do NOT force-fit unrelated terms.
    - The summary must read as a strong, coherent, human-written profile — NOT a keyword list.
-   - Do NOT add \\textbf{{}} bolding to ANY word inside the Summary. Plain text only.
+   - Do NOT add \textbf{} bolding to ANY word inside the Summary. Plain text only.
 3. EXPERIENCE BULLETS (ATS OPTIMIZATION):
    - KEYWORD INTEGRATION: Naturally weave EXACT keywords and phrases from the Job Description (tools, algorithms, methodologies) into the bullet points to maximize ATS scoring.
-   - ACTION VERBS: Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Designed Frameworks").
-   - DYNAMIC MAPPING: Match JD requirements to candidate expertise. If the JD is a general ML role, focus on 'ML CORE'. If it is a Vision role, focus on 'COMPUTER VISION'.
+   - ACTION VERBS: Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Architected").
+   - DYNAMIC MAPPING: Match JD requirements to candidate expertise. If the JD is a general ML role, focus on 'ML CORE' and Deployment. If it is a Vision role, focus on 'COMPUTER VISION'.
    - Ensure all keyword integration feels natural and human-written. Avoid keyword stuffing or unnatural phrasing.
    - FORBIDDEN FILLER PHRASES: Do NOT use the following unless the JD itself uses them: "Technical Excellence", "Investigations", "Data Insights", "Compliance", "Integrity", "Forensics". These are not ATS-scorable skills.
 4. RESEARCH & PROJECTS:
    - Do NOT remove. Align bullet DESCRIPTIONS (not titles) to show technical depth relevant to the JD.
    - Project titles MUST remain VERBATIM. Do NOT rename, rephrase, or swap any project title.
 5. SKILLS SECTION:
-   - Use ONLY these EXACT category headers: Programming, ML Systems, Machine Learning, Deep Learning, Computer Vision, Frameworks, Tools.
+   - Use ONLY these EXACT category headers: Programming, Machine Learning, Deep Learning, ML Systems, Frameworks / Libraries, Tools.
    - Do NOT invent new category names (e.g., "Technical Excellence", "Data Expertise").
-   - Maintain the existing LaTeX formatting (e.g., \\textbf{{Category:}}). Do NOT add extra bolding.
+   - Maintain the existing LaTeX formatting (e.g., \textbf{Category:}). Do NOT add extra bolding.
 
 JOB DESCRIPTION:
 {jd}
 
 RESUME LATEX (Full Source):
 {resume}
-
 OUTPUT MODIFIED LATEX CODE:"""
 
 def clean_markdown(text: str) -> str:
