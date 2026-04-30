@@ -11,7 +11,7 @@ if not API_KEY:
     st.stop()
 
 MARKDOWN_ARTIFACTS = ["```latex", "```", "```python", "```text"]
-PROMPT_TEMPLATE = r"""You are an elite LaTeX Resume Optimizer. Your mission is to adapt the candidate's resume for a specific Job Description (JD) with surgical precision. 
+PROMPT_TEMPLATE = r"""You are an elite LaTeX Resume Optimizer and Storyteller. Your mission is to adapt the candidate's resume for a specific Job Description (JD) by crafting a compelling narrative of their engineering impact, rather than just stuffing it with professional keywords.
 
 ==== ABSOLUTE CONSTRAINTS (CRITICAL) ====
 1. PAGE LIMIT & CONTENT RETENTION: The output MUST stay on one page. HOWEVER, you MUST preserve the approximate length, detail, and technical depth of the original resume. Do NOT over-summarize or aggressively cut content. Do NOT reduce content density.
@@ -23,11 +23,13 @@ PROMPT_TEMPLATE = r"""You are an elite LaTeX Resume Optimizer. Your mission is t
 5. PRESERVE STRUCTURE: 
    - Keep all LaTeX commands (\newcommand, \usepackage, \geometry, \vspace, \item) EXACTLY intact.
    - DO NOT modify LaTeX syntax, commands, brackets, or structure.
-6. STRICTLY FORBIDDEN: Do NOT include: Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", "Agentic AI", "R", or "R language" unless explicitly present in the original resume. Explicitly ignore these. Do NOT add irrelevant information the candidate does not have, such as embedded hardware programming or perceptron systems.
+6. STRICTLY FORBIDDEN (HONESTY ENFORCEMENT): Do NOT include: Kubernetes, Docker, Terraform, CI/CD, Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", "Agentic AI", "R", "R language", "large scale", "highly scalable", "millions of users", or "high-traffic" unless explicitly present in the original resume. Explicitly ignore these. Do NOT add irrelevant information the candidate does not have, such as embedded hardware programming or perceptron systems.
 7. NO TITLE CHANGE: Do NOT change the candidate's existing job profile title/role. It MUST remain EXACTLY as it is in the original resume.
 8. NO HALLUCINATION/FABRICATION: Do NOT invent, rename, or substitute ANY project, job, or experience. Project titles MUST be copied VERBATIM from the original resume. You may only rephrase bullet descriptions — never the title itself.
 9. LAYOUT PRESERVATION: Do NOT change spacing, formatting, or line structure that could affect the one-page layout.
 10. BULLET COUNT ENFORCEMENT: Count bullets per role/project in the original before writing. The output MUST have the EXACT same count. Do NOT silently drop or merge any bullet.
+11. METRICS PRESERVATION: You MUST strictly retain ALL numbers, percentages, timeframes, and quantifiable metrics from the original resume. Do NOT drop or paraphrase integers/numbers out of the bullet points.
+12. SKILL GAP ANALYSIS ("MARK TO LEARN"): At the very end of your LaTeX output, after \end{{document}}, add a LaTeX comment block starting with `% MISSING SKILLS TO LEARN:` followed by a comma-separated list of key skills required by the JD that the candidate currently lacks. This helps the candidate know what to learn.
 
 ==== CANDIDATE EXPERTISE SOURCE OF TRUTH ====
 - ML CORE: Python, Model Evaluation, Data Pipelines, Supervised Learning, Metric Learning.
@@ -37,25 +39,27 @@ PROMPT_TEMPLATE = r"""You are an elite LaTeX Resume Optimizer. Your mission is t
 - GEN AI/LLMS: Basic RAG, OpenAI text-embedding-3, GPT-4, Neo4j (Search integration).
 - TOOLS/DBs: SQL, Git, Linux, Jupyter.
 
-==== OPTIMIZATION STRATEGY (DYNAMIC ALIGNMENT) ====
-1. STRICT ALIGNMENT RULE: Do NOT bias the resume toward one niche (like Adversarial Learning) unless the JD explicitly asks for it. Dynamically select the 2-3 most relevant core skills from the "Source of Truth" above.
-2. SUMMARY:
-   - Keep the summary grounded in the candidate's general ML engineering expertise based on the "Source of Truth".
-   - You MAY naturally weave 2-3 of the most important required keywords from the JD into the summary — ONLY if they reflect real candidate skills. Do NOT force-fit unrelated terms.
-   - The summary must read as a strong, coherent, human-written profile — NOT a keyword list.
-   - Do NOT add \textbf{{}} bolding to ANY word inside the Summary. Plain text only.
-3. EXPERIENCE BULLETS (ATS OPTIMIZATION):
-   - KEYWORD INTEGRATION: Naturally weave EXACT keywords and phrases from the Job Description (tools, algorithms, methodologies) into the bullet points to maximize ATS scoring.
-   - ACTION VERBS: Replace generic verbs with JD action verbs (e.g., "Validated", "Benchmarked", "Optimized", "Architected").
-   - DYNAMIC MAPPING: Match JD requirements to candidate expertise. If the JD is a general ML role, focus on 'ML CORE' and Deployment. If it is a Vision role, focus on 'COMPUTER VISION'.
-   - Ensure all keyword integration feels natural and human-written. Avoid keyword stuffing or unnatural phrasing.
-   - FORBIDDEN FILLER PHRASES: Do NOT use the following unless the JD itself uses them: "Technical Excellence", "Investigations", "Data Insights", "Compliance", "Integrity", "Forensics". These are not ATS-scorable skills.
+==== OPTIMIZATION STRATEGY (NARRATIVE & STORYTELLING) ====
+1. STORYTELLING OVER KEYWORDS (CRITICAL):
+   - The resume MUST read like a compelling narrative of impact, problem-solving, and engineering excellence, NOT a robotic list of ATS keywords.
+   - Focus on the "Why" and "How": When rewriting bullets, clarify the core engineering challenge, the specific approach taken, and the quantifiable result.
+   - Do NOT awkwardly shoehorn JD keywords. If a required tool aligns with their "Source of Truth", integrate it smoothly into the story of what was built. If it breaks the flow, leave it out.
+2. SUMMARY AS A HOOK:
+   - Write an engaging opening narrative that frames the candidate as an effective problem solver.
+   - You MAY naturally weave 2-3 JD keywords into the summary, but ONLY if they reflect real skills and fit the narrative naturally.
+   - Do NOT add \textbf{{}} bolding inside the Summary. Plain text only.
+3. EXPERIENCE BULLETS (ACTION-IMPACT NARRATIVE):
+   - Restructure bullets to follow a clear "Action -> Context/Challenge -> Result" flow. Tell a mini-story in each bullet.
+   - METRIC-DRIVEN IMPACT: The "Result" must explicitly highlight the numbers, percentages, and metrics from the original resume. Never remove an integer or quantifiable metric when rewriting.
+   - DYNAMIC MAPPING: Tailor the narrative to the JD. For MLOps, tell the story of their inference and deployment optimization. For AI Security, tell the story of their robustness and adversarial defenses. For Vision, highlight their deep learning pipeline challenges.
+   - AVOID ROBOTIC TONE: Ensure the tone is engaging, human, and professional. Remove any phrasing that sounds artificially generated or "ATS-optimized".
+   - FORBIDDEN FILLER PHRASES: Do NOT use: "Technical Excellence", "Investigations", "Data Insights", "Compliance", "Integrity", "Forensics".
 4. RESEARCH & PROJECTS:
-   - Do NOT remove. Align bullet DESCRIPTIONS (not titles) to show technical depth relevant to the JD.
-   - Project titles MUST remain VERBATIM. Do NOT rename, rephrase, or swap any project title.
-5. SKILLS SECTION:
+   - Align bullet descriptions to tell the story of the project's goals, the innovative methods used, and the final outcomes. Project titles MUST remain VERBATIM.
+5. SKILLS SECTION (ATS KEYWORD ENGINE):
+   - This section is your primary tool for ATS optimization.
+   - Inject the EXACT keywords from the Job Description here, provided they align with the candidate's "Source of Truth". (e.g., if JD asks for "Object Detection", add it here alongside YOLOv8).
    - Use ONLY these EXACT category headers: Programming, Machine Learning, Deep Learning, ML Systems, Frameworks / Libraries, Tools.
-   - Do NOT invent new category names (e.g., "Technical Excellence", "Data Expertise").
    - Maintain the existing LaTeX formatting (e.g., \textbf{{Category:}}). Do NOT add extra bolding.
 
 JOB DESCRIPTION:
@@ -70,11 +74,34 @@ def clean_markdown(text: str) -> str:
         text = text.replace(artifact, "")
     return text.strip()
 
+def sanitize_latex(text: str) -> str:
+    # LLMs often generate unicode characters that crash pdflatex or ATS text extractors.
+    # We replace them with safe LaTeX ASCII equivalents before compiling.
+    replacements = {
+        "“": "``", "”": "''", "‘": "`", "’": "'",
+        "—": "---", "–": "--", "…": "...", "•": "\\textbullet{}",
+        " ": " ", " ": " ", "​": "", # Non-breaking spaces and zero-width spaces
+        "&": "\\&", "%": "\\%", "$": "\\$", "#": "\\#", "_": "\\_", 
+        # Wait, if we replace &, %, $, #, we might break actual LaTeX commands!
+        # Gemini is outputting LaTeX, so it *should* already escape them.
+        # But we MUST fix the unicode quotes and dashes!
+    }
+    # Safely replace only the known bad unicode quotes and spaces
+    safe_replacements = {
+        "“": "``", "”": "''", "‘": "`", "’": "'",
+        "—": "---", "–": "--", "…": "...", "•": "\\textbullet{}",
+        " ": " ", " ": " ", "​": ""
+    }
+    for old, new in safe_replacements.items():
+        text = text.replace(old, new)
+    return text
+
 def optimize_resume(jd: str, resume: str, model_id: str) -> str:
     client = genai.Client(api_key=API_KEY)
     prompt = PROMPT_TEMPLATE.format(jd=jd, resume=resume)
     response = client.models.generate_content(model=model_id, contents=prompt)
-    return clean_markdown(response.text)
+    cleaned_text = clean_markdown(response.text)
+    return sanitize_latex(cleaned_text)
 
 # --- STREAMLIT UI ---
 st.set_page_config(page_title="LaTeX Resume Optimizer", page_icon="📄")
@@ -132,7 +159,7 @@ if st.button("Generate Optimized Resume", type="primary"):
                             text=True
                         )
                         
-                        if os.path.exists(pdf_path):
+                        if compile_process.returncode == 0 and os.path.exists(pdf_path):
                             with open(pdf_path, "rb") as f:
                                 pdf_data = f.read()
                                 
@@ -144,7 +171,7 @@ if st.button("Generate Optimized Resume", type="primary"):
                                 mime="application/pdf"
                             )                            
                         else:
-                            st.error("❌ Failed to compile LaTeX to PDF. The model likely generated invalid LaTeX structure.")
+                            st.error("❌ Failed to compile LaTeX to PDF. The model likely generated invalid LaTeX structure or there is a syntax error.")
                             with st.expander("View LaTeX Errors"):
                                 st.text(compile_process.stdout)
             except Exception as e:
