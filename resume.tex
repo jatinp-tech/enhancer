@@ -7,14 +7,10 @@
 \usepackage{float}
 \usepackage{ragged2e}
 \usepackage[empty]{fullpage}
-\usepackage{wrapfig}
-\usepackage{lipsum}
 \usepackage{tabularx}
 \usepackage{titlesec}
 \usepackage{geometry}
-\usepackage{marvosym}
 \usepackage{verbatim}
-\usepackage{fontawesome5}
 \usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \usepackage{fancyhdr}
@@ -31,21 +27,7 @@
 \renewcommand{\footrulewidth}{0pt}
 \geometry{left=1.4cm, top=0.8cm, right=1.2cm, bottom=1cm}
 
-\usepackage[most]{tcolorbox}
-\tcbset{
-	frame code={},
-	center title,
-	left=0pt,
-	right=0pt,
-	top=0pt,
-	bottom=0pt,
-	colback=gray!20,
-	colframe=white,
-	width=\dimexpr\textwidth\relax,
-	enlarge left by=-2mm,
-	boxsep=4pt,
-	arc=0pt,outer arc=0pt,
-}
+
 
 \urlstyle{same}
 \raggedright
@@ -108,7 +90,7 @@
 }
 
 
-\renewcommand{\labelitemi}{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand{\labelitemi}{\textbullet}
 
 \newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*,labelsep=0mm]}
 \newcommand{\resumeHeadingSkillStart}{\begin{itemize}[leftmargin=*,itemsep=1.0mm, rightmargin=2ex]}
@@ -119,10 +101,8 @@
 \newcommand{\resumeItemListEnd}{\end{itemize}\end{justify}\vspace{-1mm}}
 \newcommand{\cvsection}[1]{%
 \vspace{1mm}
-\begin{tcolorbox}
-    \textbf{\large #1}
-\end{tcolorbox}
-    \vspace{-4mm}
+\textbf{\large #1}
+\vspace{-4mm}
 }
 
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}%
@@ -245,8 +225,10 @@
 %-----------EDUCATION-----------------
 \vspace{-5 mm}
 \section{\textbf{Education}}
+\begin{itemize}[leftmargin=0.15in]
 \resumeProject  
   {Samrat Ashok Technological Institute, Madhya Pradesh}
-  {March 2019 - March 2023}{B.Tech. - Computer Science Engineering}
-\resumeItemListEnd
+  {March 2019 - March 2023}
+  \\ {B.Tech. - Computer Science Engineering}
+\end{itemize}
 \end{document}
