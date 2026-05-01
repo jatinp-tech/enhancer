@@ -159,32 +159,47 @@ if st.button("Generate Optimized Resume", type="primary"):
                     with tempfile.TemporaryDirectory() as temp_dir:
                         tex_path = os.path.join(temp_dir, "optimized.tex")
                         pdf_path = os.path.join(temp_dir, "optimized.pdf")
+                        log_path = os.path.join(temp_dir, "optimized.log")
                         
                         with open(tex_path, "w", encoding="utf-8") as f:
                             f.write(optimized_tex)
                         
-                        compile_process = subprocess.run(
-                            ["pdflatex", "-interaction=nonstopmode", "optimized.tex"],
-                            cwd=temp_dir,
-                            capture_output=True,
-                            text=True
-                        )
+                        pdflatex_cmd = ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "optimized.tex"]
                         
-                        if compile_process.returncode == 0 and os.path.exists(pdf_path):
+                        # Run pdflatex TWICE — first pass builds references/outlines,
+                        # second pass resolves them. Without this, the PDF has broken
+                        # cross-references and tools like ResumeGo reject it.
+                        compile_process = subprocess.run(pdflatex_cmd, cwd=temp_dir, capture_output=True, text=True)
+                        if compile_process.returncode == 0:
+                            compile_process = subprocess.run(pdflatex_cmd, cwd=temp_dir, capture_output=True, text=True)
+                        
+                        # Check for fatal LaTeX errors in the log (even if returncode was 0)
+                        has_fatal_error = False
+                        if os.path.exists(log_path):
+                            with open(log_path, "r", encoding="utf-8", errors="ignore") as lf:
+                                log_text = lf.read()
+                            if "Fatal error" in log_text or "Emergency stop" in log_text:
+                                has_fatal_error = True
+                        
+                        if compile_process.returncode == 0 and os.path.exists(pdf_path) and not has_fatal_error:
                             with open(pdf_path, "rb") as f:
                                 pdf_data = f.read()
-                                
-                            st.success("🎉 PDF Compiled Successfully!")
-                            st.download_button(
-                                label="⬇️ Download Optimized PDF",
-                                data=pdf_data,
-                                file_name="optimized.pdf",
-                                mime="application/pdf"
-                            )                            
+                            
+                            # Validate PDF header — a corrupt file won't start with %PDF
+                            if pdf_data[:5] == b"%PDF-":
+                                st.success("🎉 PDF Compiled Successfully!")
+                                st.download_button(
+                                    label="⬇️ Download Optimized PDF",
+                                    data=pdf_data,
+                                    file_name="optimized.pdf",
+                                    mime="application/pdf"
+                                )
+                            else:
+                                st.error("❌ PDF file appears corrupt. Download the .tex above and compile locally.")
                         else:
-                            st.warning("⚠️ pdflatex not available on this server. Use the .tex download above and compile locally with: `pdflatex optimized.tex`")
+                            st.warning("⚠️ PDF compilation failed. Use the .tex download above and compile locally with: `pdflatex optimized.tex`")
                             with st.expander("View LaTeX Compilation Errors"):
-                                st.text(compile_process.stdout)
+                                st.text(compile_process.stdout[-3000:] if len(compile_process.stdout) > 3000 else compile_process.stdout)
             except Exception as e:
                 error_msg = str(e)
                 if "429" in error_msg or "quota" in error_msg.lower():
