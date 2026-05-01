@@ -105,6 +105,15 @@
     \vspace{-1mm}
 }
 
+\newcommand{\resumeEducation}[3]{
+\vspace{0.1mm}
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1} & \textit{\footnotesize{#2}} \\
+        \textit{\footnotesize{#3}} & \\
+    \end{tabular*}
+    \vspace{-1.4mm}
+}
+
 
 \renewcommand{\labelitemi}{$\vcenter{\hbox{\tiny$\bullet$}}$}
 
@@ -256,8 +265,8 @@
 \vspace{-5 mm}
 \section{\textbf{Education}}
 \vspace{1mm}
-\begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
-    {Samrat Ashok Technological Institute, Madhya Pradesh} & {March 2019 - March 2023} \\
-    {B.Tech. - Computer Science Engineering} & \\
-\end{tabular*}
+\resumeEducation
+    {Samrat Ashok Technological Institute, Madhya Pradesh}
+    {March 2019 - March 2023}
+    {B.Tech. - Computer Science Engineering}
 \end{document}

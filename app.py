@@ -11,64 +11,40 @@ if not API_KEY:
     st.stop()
 
 MARKDOWN_ARTIFACTS = ["```latex", "```", "```python", "```text"]
-PROMPT_TEMPLATE = r"""You are an elite LaTeX Resume Optimizer and Storyteller. Your mission is to adapt the candidate's resume for a specific Job Description (JD) by crafting a compelling narrative of their engineering impact, rather than just stuffing it with professional keywords.
+PROMPT_TEMPLATE = r"""You are an ATS Resume Optimizer (like Jobscan). Rewrite the candidate's LaTeX resume for the given Job Description. Output ONLY raw LaTeX — no markdown, no explanation.
 
-==== ABSOLUTE CONSTRAINTS (CRITICAL) ====
-1. PAGE LIMIT & CONTENT RETENTION: The output MUST stay on one page. HOWEVER, you MUST preserve the approximate length, detail, and technical depth of the original resume. Do NOT over-summarize or aggressively cut content. Do NOT reduce content density.
-2. NO SECTION REMOVAL: Do NOT remove any major sections (Summary, Work Experience, Projects, Publications, Skills, Education). ALL sections must remain in the output.
-3. BULLET POINT COUNT: Keep the EXACT SAME number of bullet points per role/project. Do NOT add new ones, and do NOT delete existing ones. Maintain similar length and technical depth for each bullet. Do NOT merge or split bullets. SUMMARY must be max 3 lines.
-4. RAW LATEX ONLY: Output ONLY pure LaTeX code. 
-   - ✗ NO MARKDOWN BOLD (Do NOT use **keyword**)
-   - ⚠️ YOUR ENTIRE OUTPUT IS INVALID IF IT CONTAINS ANY DOUBLE ASTERISKS (**).
-5. PRESERVE STRUCTURE: 
-   - Keep all LaTeX commands (\newcommand, \usepackage, \geometry, \vspace, \item) EXACTLY intact.
-   - DO NOT modify LaTeX syntax, commands, brackets, or structure.
-6. STRICTLY FORBIDDEN (HONESTY ENFORCEMENT): Do NOT include: Kubernetes, Terraform, CI/CD, Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", "Agentic AI", "R", "R language", "large scale", "millions of users", or "high-traffic" unless explicitly present in the original resume. Explicitly ignore these. Do NOT add irrelevant information the candidate does not have, such as embedded hardware programming or perceptron systems.
-7. NO TITLE CHANGE: Do NOT change the candidate's existing job profile title/role. It MUST remain EXACTLY as it is in the original resume.
-8. NO HALLUCINATION/FABRICATION: Do NOT invent, rename, or substitute ANY project, job, or experience. Project titles MUST be copied VERBATIM from the original resume. You may only rephrase bullet descriptions — never the title itself.
-9. LAYOUT PRESERVATION: Do NOT change spacing, formatting, or line structure that could affect the one-page layout.
-10. BULLET COUNT ENFORCEMENT: Count bullets per role/project in the original before writing. The output MUST have the EXACT same count. Do NOT silently drop or merge any bullet.
-11. METRICS PRESERVATION: You MUST strictly retain ALL numbers, percentages, timeframes, and quantifiable metrics from the original resume. Do NOT drop or paraphrase integers/numbers out of the bullet points.
-12. SKILL GAP ANALYSIS ("MARK TO LEARN"): At the very end of your LaTeX output, after \end{{document}}, add a LaTeX comment block starting with `% MISSING SKILLS TO LEARN:` followed by a comma-separated list of key skills required by the JD that the candidate currently lacks. This helps the candidate know what to learn.
-
-==== CANDIDATE EXPERTISE SOURCE OF TRUTH ====
-- ML CORE: Python, Model Evaluation, Data Pipelines, Supervised Learning, Metric Learning.
-- COMPUTER VISION (High-Tier): YOLOv8, ConvNeXt, OpenCV, DINO/CLIP embeddings, Object shape-based detection, Image preprocessing.
-- INFERENCE & DEPLOYMENT: FastAPI, Streamlit, GPU batching, Latency optimization (25-40% reduction), local GPU servers.
-- ROBUSTNESS & SECURITY: Adversarial learning (FGSM, PGD), anomaly detection (Isolation Forest), cryptographic analysis.
-- NLP (Basic): Text classification, sentiment analysis fundamentals; familiar with Transformer architecture concepts (BERT, RoBERTa).
-- GEN AI/LLMS: Basic RAG, OpenAI text-embedding-3, GPT-4, Neo4j (Search integration).
-- TOOLS/DBs: SQL, Git, Linux, Jupyter.
-
-==== OPTIMIZATION STRATEGY (NARRATIVE & STORYTELLING) ====
-1. STORYTELLING OVER KEYWORDS (CRITICAL):
-   - The resume MUST read like a compelling narrative of impact, problem-solving, and engineering excellence, NOT a robotic list of ATS keywords.
-   - Focus on the "Why" and "How": When rewriting bullets, clarify the core engineering challenge, the specific approach taken, and the quantifiable result.
-   - Do NOT awkwardly shoehorn JD keywords. If a required tool aligns with their "Source of Truth", integrate it smoothly into the story of what was built. If it breaks the flow, leave it out.
-2. SUMMARY AS A HOOK:
+=== HARD RULES ===
+1. Output ONLY valid LaTeX. No **, no markdown, no triple backticks.
+2. Keep ALL sections (Summary, Work Experience, Projects, Publications, Skills, Education).
+3. Keep the EXACT same number of bullet points per role. Do NOT add, merge, drop, or split bullets.
+4. Keep ALL numbers, percentages, and metrics verbatim. Never remove a quantifiable result.
+5. Do NOT change the candidate's job title. Do NOT rename projects — copy titles verbatim.
+6. Do NOT hallucinate: no Kubernetes, Docker, Terraform, CI/CD, AWS/Azure/GCP, R, embedded hardware, "large-scale", "millions of users" unless already in the original.
+7. Preserve ALL LaTeX commands (\newcommand, \usepackage, \geometry, \vspace, \item) exactly. Do not change spacing or layout.
+8.SUMMARY AS A HOOK:
    - Write an engaging opening narrative that frames the candidate as an effective problem solver.
    - You MAY naturally weave 2-3 JD keywords into the summary, but ONLY if they reflect real skills and fit the narrative naturally.
-   - Do NOT add \textbf{{}} bolding inside the Summary. Plain text only.
-3. EXPERIENCE BULLETS (ACTION-IMPACT NARRATIVE):
-   - Restructure bullets to follow a clear "Action -> Context/Challenge -> Result" flow. Tell a mini-story in each bullet.
-   - METRIC-DRIVEN IMPACT: The "Result" must explicitly highlight the numbers, percentages, and metrics from the original resume. Never remove an integer or quantifiable metric when rewriting.
-   - DYNAMIC MAPPING: Tailor the narrative to the JD. For MLOps, tell the story of their inference and deployment optimization. For AI Security, tell the story of their robustness and adversarial defenses. For Vision, highlight their deep learning pipeline challenges.
-   - AVOID ROBOTIC TONE: Ensure the tone is engaging, human, and professional. Remove any phrasing that sounds artificially generated or "ATS-optimized".
-   - FORBIDDEN FILLER PHRASES: Do NOT use: "Technical Excellence", "Investigations", "Data Insights", "Compliance", "Integrity", "Forensics".
-4. RESEARCH & PROJECTS:
-   - Align bullet descriptions to tell the story of the project's goals, the innovative methods used, and the final outcomes. Project titles MUST remain VERBATIM.
-5. SKILLS SECTION (ATS KEYWORD ENGINE):
-   - This section is your primary tool for ATS optimization.
-   - Inject the EXACT keywords from the Job Description here, provided they align with the candidate's "Source of Truth". (e.g., if JD asks for "Object Detection", add it here alongside YOLOv8).
-   - Use ONLY these EXACT category headers: Programming, Machine Learning, Deep Learning, ML Systems, Frameworks / Libraries, Tools.
-   - Maintain the existing LaTeX formatting (e.g., \textbf{{Category:}}). Do NOT add extra bolding.
+9. Skills section: use ONLY these headers: Programming, Machine Learning, Deep Learning, ML Systems, Frameworks / Libraries, Tools. Inject JD keywords that match the candidate's real skills.
+
+=== CANDIDATE SKILLS (Source of Truth) ===
+ML: Python, Supervised Learning, Clustering, PCA, XGBoost, SVM, Metric Learning
+Vision: YOLOv8, ConvNeXt, OpenCV, DINO/CLIP, ArcFace, object shape-based detection
+Deployment: FastAPI, Streamlit, GPU batching, latency optimization (25-40% reduction), local GPU servers
+Robustness: Adversarial ML (FGSM, PGD) in CNN, Isolation Forest anomaly detection, cryptographic analysis
+GenAI: RAG basics, Text embeddings, Bert
+Tools: SQL, Git, Linux, Jupyter
+
+=== WRITING STYLE ===
+- Each bullet: "Action → Challenge/Context → Result". Keep tone professional and human.
+- Tailor emphasis to the JD (MLOps → deployment; Security → robustness; Vision → pipelines).
+- Do NOT use filler phrases: "Technical Excellence", "Data Insights", "Compliance", "Integrity".
 
 JOB DESCRIPTION:
 {jd}
 
-RESUME LATEX (Full Source):
+RESUME LATEX:
 {resume}
-OUTPUT MODIFIED LATEX CODE:"""
+OUTPUT:"""
 
 def clean_markdown(text: str) -> str:
     for artifact in MARKDOWN_ARTIFACTS:
@@ -141,16 +117,6 @@ if st.button("Generate Optimized Resume", type="primary"):
                 optimized_tex = optimize_resume(jd_input, resume_content, selected_model)
                 st.success(f"✅ Optimization complete using {selected_model}!")
                 
-                # Always save and offer the .tex file for download (works even on Streamlit Cloud without pdflatex)
-                with open("optimized.tex", "w", encoding="utf-8") as f:
-                    f.write(optimized_tex)
-                st.download_button(
-                    label="⬇️ Download Optimized LaTeX (.tex)",
-                    data=optimized_tex.encode("utf-8"),
-                    file_name="optimized.tex",
-                    mime="text/plain"
-                )
-                
                 with st.spinner("Compiling LaTeX to PDF..."):
                     import tempfile
                     import subprocess
@@ -159,47 +125,32 @@ if st.button("Generate Optimized Resume", type="primary"):
                     with tempfile.TemporaryDirectory() as temp_dir:
                         tex_path = os.path.join(temp_dir, "optimized.tex")
                         pdf_path = os.path.join(temp_dir, "optimized.pdf")
-                        log_path = os.path.join(temp_dir, "optimized.log")
                         
                         with open(tex_path, "w", encoding="utf-8") as f:
                             f.write(optimized_tex)
                         
-                        pdflatex_cmd = ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "optimized.tex"]
+                        compile_process = subprocess.run(
+                            ["pdflatex", "-interaction=nonstopmode", "optimized.tex"],
+                            cwd=temp_dir,
+                            capture_output=True,
+                            text=True
+                        )
                         
-                        # Run pdflatex TWICE — first pass builds references/outlines,
-                        # second pass resolves them. Without this, the PDF has broken
-                        # cross-references and tools like ResumeGo reject it.
-                        compile_process = subprocess.run(pdflatex_cmd, cwd=temp_dir, capture_output=True, text=True)
-                        if compile_process.returncode == 0:
-                            compile_process = subprocess.run(pdflatex_cmd, cwd=temp_dir, capture_output=True, text=True)
-                        
-                        # Check for fatal LaTeX errors in the log (even if returncode was 0)
-                        has_fatal_error = False
-                        if os.path.exists(log_path):
-                            with open(log_path, "r", encoding="utf-8", errors="ignore") as lf:
-                                log_text = lf.read()
-                            if "Fatal error" in log_text or "Emergency stop" in log_text:
-                                has_fatal_error = True
-                        
-                        if compile_process.returncode == 0 and os.path.exists(pdf_path) and not has_fatal_error:
+                        if compile_process.returncode == 0 and os.path.exists(pdf_path):
                             with open(pdf_path, "rb") as f:
                                 pdf_data = f.read()
-                            
-                            # Validate PDF header — a corrupt file won't start with %PDF
-                            if pdf_data[:5] == b"%PDF-":
-                                st.success("🎉 PDF Compiled Successfully!")
-                                st.download_button(
-                                    label="⬇️ Download Optimized PDF",
-                                    data=pdf_data,
-                                    file_name="optimized.pdf",
-                                    mime="application/pdf"
-                                )
-                            else:
-                                st.error("❌ PDF file appears corrupt. Download the .tex above and compile locally.")
+                                
+                            st.success("🎉 PDF Compiled Successfully!")
+                            st.download_button(
+                                label="⬇️ Download Optimized PDF",
+                                data=pdf_data,
+                                file_name="optimized.pdf",
+                                mime="application/pdf"
+                            )                            
                         else:
-                            st.warning("⚠️ PDF compilation failed. Use the .tex download above and compile locally with: `pdflatex optimized.tex`")
-                            with st.expander("View LaTeX Compilation Errors"):
-                                st.text(compile_process.stdout[-3000:] if len(compile_process.stdout) > 3000 else compile_process.stdout)
+                            st.error("❌ Failed to compile LaTeX to PDF. The model likely generated invalid LaTeX structure or there is a syntax error.")
+                            with st.expander("View LaTeX Errors"):
+                                st.text(compile_process.stdout)
             except Exception as e:
                 error_msg = str(e)
                 if "429" in error_msg or "quota" in error_msg.lower():
