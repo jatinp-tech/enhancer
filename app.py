@@ -23,7 +23,7 @@ PROMPT_TEMPLATE = r"""You are an elite LaTeX Resume Optimizer and Storyteller. Y
 5. PRESERVE STRUCTURE: 
    - Keep all LaTeX commands (\newcommand, \usepackage, \geometry, \vspace, \item) EXACTLY intact.
    - DO NOT modify LaTeX syntax, commands, brackets, or structure.
-6. STRICTLY FORBIDDEN (HONESTY ENFORCEMENT): Do NOT include: Kubernetes, Docker, Terraform, CI/CD, Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", "Agentic AI", "R", "R language", "large scale", "highly scalable", "millions of users", or "high-traffic" unless explicitly present in the original resume. Explicitly ignore these. Do NOT add irrelevant information the candidate does not have, such as embedded hardware programming or perceptron systems.
+6. STRICTLY FORBIDDEN (HONESTY ENFORCEMENT): Do NOT include: Kubernetes, Terraform, CI/CD, Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", "Agentic AI", "R", "R language", "large scale", "millions of users", or "high-traffic" unless explicitly present in the original resume. Explicitly ignore these. Do NOT add irrelevant information the candidate does not have, such as embedded hardware programming or perceptron systems.
 7. NO TITLE CHANGE: Do NOT change the candidate's existing job profile title/role. It MUST remain EXACTLY as it is in the original resume.
 8. NO HALLUCINATION/FABRICATION: Do NOT invent, rename, or substitute ANY project, job, or experience. Project titles MUST be copied VERBATIM from the original resume. You may only rephrase bullet descriptions — never the title itself.
 9. LAYOUT PRESERVATION: Do NOT change spacing, formatting, or line structure that could affect the one-page layout.
