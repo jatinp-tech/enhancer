@@ -11,33 +11,32 @@ if not API_KEY:
     st.stop()
 
 MARKDOWN_ARTIFACTS = ["```latex", "```", "```python", "```text"]
-PROMPT_TEMPLATE = r"""You are an ATS Resume Optimizer (like Jobscan). Rewrite the candidate's LaTeX resume for the given Job Description. Output ONLY raw LaTeX — no markdown, no explanation.
+PROMPT_TEMPLATE = r"""You are an elite Resume ATS Optimizer. Rewrite the candidate's LaTeX resume for the given Job Description. Output ONLY pure LaTeX.
 
-=== HARD RULES ===
-1. Output ONLY valid LaTeX. No **, no markdown, no triple backticks.
-2. Keep ALL sections (Summary, Work Experience, Projects, Publications, Skills, Education).
-3. Keep the EXACT same number of bullet points per role. Do NOT add, merge, drop, or split bullets.
-4. Keep ALL numbers, percentages, and metrics verbatim. Never remove a quantifiable result.
-5. Do NOT change the candidate's job title. Do NOT rename projects — copy titles verbatim.
-6. Do NOT hallucinate: no Kubernetes, Docker, Terraform, CI/CD, AWS/Azure/GCP, R, embedded hardware, "large-scale", "millions of users" unless already in the original.
-7. Preserve ALL LaTeX commands (\newcommand, \usepackage, \geometry, \vspace, \item) exactly. Do not change spacing or layout.
-8.SUMMARY AS A HOOK:
-   - Write an engaging opening narrative that frames the candidate as an effective problem solver.
+=== CRITICAL RULES ===
+1. Output ONLY valid LaTeX. No markdown, no **bolding**, no triple backticks.
+2. Keep ALL sections: Summary, Work Experience, Projects, Publications, Skills, Education.
+3. Keep the EXACT same number of bullet points per section. Do NOT add/drop/merge bullets.
+4. Keep ALL numbers, percentages, and metrics verbatim.
+5. Do NOT change job titles or project titles. Copy them verbatim.
+6. PRESERVE STRUCTURE: Keep all commands (\newcommand, \usepackage, \geometry, \vspace, \item, \resumeItemListStart, \resumeEducation) exactly as they are. Do NOT substitute commands.
+7. SUMMARY AS A HOOK:
+   - Write an engaging opening narrative (max 3 lines) that frames the candidate as an effective problem solver.
    - You MAY naturally weave 2-3 JD keywords into the summary, but ONLY if they reflect real skills and fit the narrative naturally.
-9. Skills section: use ONLY these headers: Programming, Machine Learning, Deep Learning, ML Systems, Frameworks / Libraries, Tools. Inject JD keywords that match the candidate's real skills.
+   - Do NOT use \textbf{{}} bolding inside the summary.
+8. FORBIDDEN WORDS: Do NOT use "Technical Excellence", "Investigations", "Data Insights", "Compliance", "Integrity", "Forensics", "Results-driven".
 
-=== CANDIDATE SKILLS (Source of Truth) ===
-ML: Python, Supervised Learning, Clustering, PCA, XGBoost, SVM, Metric Learning
-Vision: YOLOv8, ConvNeXt, OpenCV, DINO/CLIP, ArcFace, object shape-based detection
-Deployment: FastAPI, Streamlit, GPU batching, latency optimization (25-40% reduction), local GPU servers
-Robustness: Adversarial ML (FGSM, PGD) in CNN, Isolation Forest anomaly detection, cryptographic analysis
-GenAI: RAG basics, Text embeddings, Bert
-Tools: SQL, Git, Linux, Jupyter
+=== CANDIDATE TRUTH (Source of Truth) ===
+- ML: Python, Model Evaluation, Data Pipelines, Supervised Learning, Metric Learning.
+- VISION: YOLOv8, ConvNeXt, OpenCV, DINO/CLIP, Object shape detection.
+- DEPLOYMENT: FastAPI, Streamlit, GPU batching, Latency optimization (25-40%).
+- SECURITY: Adversarial learning (FGSM, PGD), Isolation Forest anomaly detection.
+- GEN AI/NLP: RAG, Transformers (BERT, RoBERTa), Text Embeddings.
 
 === WRITING STYLE ===
-- Each bullet: "Action → Challenge/Context → Result". Keep tone professional and human.
-- Tailor emphasis to the JD (MLOps → deployment; Security → robustness; Vision → pipelines).
-- Do NOT use filler phrases: "Technical Excellence", "Data Insights", "Compliance", "Integrity".
+- Bullet points: "Action → Context → Result". Tell a story of impact.
+- Tailor focus based on JD (MLOps vs Security vs Vision).
+- Keep tone human, engineering-focused, and professional.
 
 JOB DESCRIPTION:
 {jd}
@@ -54,16 +53,6 @@ def clean_markdown(text: str) -> str:
 def sanitize_latex(text: str) -> str:
     # LLMs often generate unicode characters that crash pdflatex or ATS text extractors.
     # We replace them with safe LaTeX ASCII equivalents before compiling.
-    replacements = {
-        "“": "``", "”": "''", "‘": "`", "’": "'",
-        "—": "---", "–": "--", "…": "...", "•": "\\textbullet{}",
-        " ": " ", " ": " ", "​": "", # Non-breaking spaces and zero-width spaces
-        "&": "\\&", "%": "\\%", "$": "\\$", "#": "\\#", "_": "\\_", 
-        # Wait, if we replace &, %, $, #, we might break actual LaTeX commands!
-        # Gemini is outputting LaTeX, so it *should* already escape them.
-        # But we MUST fix the unicode quotes and dashes!
-    }
-    # Safely replace only the known bad unicode quotes and spaces
     safe_replacements = {
         "“": "``", "”": "''", "‘": "`", "’": "'",
         "—": "---", "–": "--", "…": "...", "•": "\\textbullet{}",
@@ -75,10 +64,33 @@ def sanitize_latex(text: str) -> str:
 
 def optimize_resume(jd: str, resume: str, model_id: str) -> str:
     client = genai.Client(api_key=API_KEY)
+    # The PROMPT_TEMPLATE uses doubled braces for \textbf{{}} etc. to work with .format()
     prompt = PROMPT_TEMPLATE.format(jd=jd, resume=resume)
     response = client.models.generate_content(model=model_id, contents=prompt)
     cleaned_text = clean_markdown(response.text)
     return sanitize_latex(cleaned_text)
+
+def verify_prompt(prompt: str) -> list:
+    """Simple validation of the generated LaTeX prompt.
+    Returns a list of error messages (empty if ok)."""
+    errors = []
+    # 1. No double asterisks (markdown bold)
+    if "**" in prompt:
+        errors.append("Found markdown bold (**). Must be removed.")
+    # 2. Forbidden terms list
+    forbidden = ["Technical Excellence", "Investigations", "Data Insights", "Compliance", "Integrity", "Forensics", "Results-driven"]
+    for term in forbidden:
+        if term.lower() in prompt.lower():
+            errors.append(f"Forbidden term detected: {term}")
+    # 3. Required sections
+    required_sections = ["Summary", "Work Experience", "Projects", "Publications", "Skills", "Education"]
+    for sec in required_sections:
+        if f"\\section{{\\textbf{{{sec}}}}}" not in prompt:
+            errors.append(f"Missing required section: {sec}")
+    # 4. Ensure no unbalanced lists
+    if prompt.count("\\resumeItemListStart") != prompt.count("\\resumeItemListEnd"):
+        errors.append("Unbalanced resumeItemList (Start vs End mismatch).")
+    return errors
 
 # --- STREAMLIT UI ---
 st.set_page_config(page_title="LaTeX Resume Optimizer", page_icon="📄")
@@ -87,20 +99,14 @@ st.title("📄 LaTeX Resume Optimizer")
 st.markdown("ATS resume optimizer with JD matching using Google AI Studio selected models.")
 
 MODEL_OPTIONS = {
-    "gemini-3-flash-preview": "1. Gemini 3 Flash (20 RPD | The Best, won't break LaTeX)",
-    "gemini-2.5-flash": "2. Gemini 2.5 Flash (20 RPD | Highly Capable alternative)",
-    "gemini-3.1-flash-lite-preview": "3. Gemini 3.1 Flash Lite (500 RPD | Best for bulk testing)",
-    "gemma-3-27b": "4. Gemma 3 27B (14,400 RPD | Massive Backup)"
+    "gemini-2.0-flash": "1. Gemini 2.0 Flash (20 RPD | The Best)",
+    "gemini-1.5-flash": "2. Gemini 1.5 Flash (20 RPD)",
+    "gemini-1.5-flash-8b": "3. Gemini 1.5 Flash 8B (500 RPD)",
+    "gemma-2-27b": "4. Gemma 2 27B (Backup)"
 }
 
-selected_model = st.selectbox(
-    "Choose your AI Model:",
-    options=list(MODEL_OPTIONS.keys()),
-    format_func=lambda x: MODEL_OPTIONS[x],
-    index=0
-)
-
-jd_input = st.text_area("Paste Job Description (JD) here:", height=300)
+selected_model = st.selectbox("Choose Model:", options=list(MODEL_OPTIONS.keys()), format_func=lambda x: MODEL_OPTIONS[x])
+jd_input = st.text_area("Paste JD here:", height=300)
 
 if st.button("Generate Optimized Resume", type="primary"):
     if not jd_input:
@@ -111,52 +117,54 @@ if st.button("Generate Optimized Resume", type="primary"):
                 with open("resume.tex", "r", encoding="utf-8") as f:
                     resume_content = f.read()
             except FileNotFoundError:
-                st.error("❌ 'resume.tex' was not found in the repository! Make sure it is pushed to GitHub.")
+                st.error("❌ 'resume.tex' was not found in the repository!")
                 st.stop()
             try:
                 optimized_tex = optimize_resume(jd_input, resume_content, selected_model)
+                
+                # Verify the generated LaTeX
+                v_errors = verify_prompt(optimized_tex)
+                if v_errors:
+                    st.error("🔍 Prompt verification failed:")
+                    for err in v_errors: st.write(f"- {err}")
+                    st.stop()
+                
                 st.success(f"✅ Optimization complete using {selected_model}!")
                 
+                # Save and offer .tex download
+                with open("optimized.tex", "w", encoding="utf-8") as f:
+                    f.write(optimized_tex)
+                st.download_button("⬇️ Download Optimized LaTeX (.tex)", optimized_tex, "optimized.tex")
+                
                 with st.spinner("Compiling LaTeX to PDF..."):
-                    import tempfile
-                    import subprocess
-                    import os
-                    
-                    with tempfile.TemporaryDirectory() as temp_dir:
-                        tex_path = os.path.join(temp_dir, "optimized.tex")
-                        pdf_path = os.path.join(temp_dir, "optimized.pdf")
+                    import tempfile, subprocess, os
+                    with tempfile.TemporaryDirectory() as td:
+                        tp = os.path.join(td, "optimized.tex")
+                        pp = os.path.join(td, "optimized.pdf")
+                        lp = os.path.join(td, "optimized.log")
                         
-                        with open(tex_path, "w", encoding="utf-8") as f:
-                            f.write(optimized_tex)
+                        with open(tp, "w", encoding="utf-8") as f: f.write(optimized_tex)
                         
-                        compile_process = subprocess.run(
-                            ["pdflatex", "-interaction=nonstopmode", "optimized.tex"],
-                            cwd=temp_dir,
-                            capture_output=True,
-                            text=True
-                        )
+                        pdflatex_cmd = ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "optimized.tex"]
                         
-                        if compile_process.returncode == 0 and os.path.exists(pdf_path):
-                            with open(pdf_path, "rb") as f:
-                                pdf_data = f.read()
-                                
-                            st.success("🎉 PDF Compiled Successfully!")
-                            st.download_button(
-                                label="⬇️ Download Optimized PDF",
-                                data=pdf_data,
-                                file_name="optimized.pdf",
-                                mime="application/pdf"
-                            )                            
+                        # Double-pass compilation for ResumeGo compatibility (resolves cross-refs/outlines)
+                        subprocess.run(pdflatex_cmd, cwd=td, capture_output=True)
+                        compile_process = subprocess.run(pdflatex_cmd, cwd=td, capture_output=True, text=True)
+                        
+                        has_fatal = False
+                        if os.path.exists(lp):
+                            with open(lp, "r", errors="ignore") as lf:
+                                log_text = lf.read()
+                                if "Fatal error" in log_text or "Emergency stop" in log_text:
+                                    has_fatal = True
+                        
+                        if compile_process.returncode == 0 and os.path.exists(pp) and not has_fatal:
+                            with open(pp, "rb") as f:
+                                st.success("🎉 PDF Compiled Successfully!")
+                                st.download_button("⬇️ Download Optimized PDF", f.read(), "optimized.pdf", "application/pdf")
                         else:
-                            st.error("❌ Failed to compile LaTeX to PDF. The model likely generated invalid LaTeX structure or there is a syntax error.")
+                            st.warning("⚠️ PDF compilation failed. Download the .tex and compile locally.")
                             with st.expander("View LaTeX Errors"):
-                                st.text(compile_process.stdout)
+                                st.text(compile_process.stdout[-3000:] if compile_process.stdout else "No output")
             except Exception as e:
-                error_msg = str(e)
-                if "429" in error_msg or "quota" in error_msg.lower():
-                    st.error("🛑 Rate Limit Exceeded for this Model!")
-                    st.warning("💡 **Tip:** You have hit the daily free quota for this specific AI model. Please scroll up and select a different model (e.g. Gemini 3.1 Flash Lite or Gemma) from the dropdown menu to continue!")
-                else:
-                    st.error(f"An error occurred: {error_msg}")
-
-
+                st.error(f"An error occurred: {e}")
