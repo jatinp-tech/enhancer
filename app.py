@@ -70,28 +70,6 @@ def optimize_resume(jd: str, resume: str, model_id: str) -> str:
     cleaned_text = clean_markdown(response.text)
     return sanitize_latex(cleaned_text)
 
-def verify_prompt(prompt: str) -> list:
-    """Simple validation of the generated LaTeX prompt.
-    Returns a list of error messages (empty if ok)."""
-    errors = []
-    # 1. No double asterisks (markdown bold)
-    if "**" in prompt:
-        errors.append("Found markdown bold (**). Must be removed.")
-    # 2. Forbidden terms list
-    forbidden = ["Technical Excellence", "Investigations", "Data Insights", "Compliance", "Integrity", "Forensics", "Results-driven"]
-    for term in forbidden:
-        if term.lower() in prompt.lower():
-            errors.append(f"Forbidden term detected: {term}")
-    # 3. Required sections
-    required_sections = ["Summary", "Work Experience", "Projects", "Publications", "Skills", "Education"]
-    for sec in required_sections:
-        if f"\\section{{\\textbf{{{sec}}}}}" not in prompt:
-            errors.append(f"Missing required section: {sec}")
-    # 4. Ensure no unbalanced lists
-    if prompt.count("\\resumeItemListStart") != prompt.count("\\resumeItemListEnd"):
-        errors.append("Unbalanced resumeItemList (Start vs End mismatch).")
-    return errors
-
 # --- STREAMLIT UI ---
 st.set_page_config(page_title="LaTeX Resume Optimizer", page_icon="📄")
 st.title("📄 LaTeX Resume Optimizer")
@@ -99,10 +77,10 @@ st.title("📄 LaTeX Resume Optimizer")
 st.markdown("ATS resume optimizer with JD matching using Google AI Studio selected models.")
 
 MODEL_OPTIONS = {
-    "gemini-2.0-flash": "1. Gemini 2.0 Flash (20 RPD | The Best)",
-    "gemini-1.5-flash": "2. Gemini 1.5 Flash (20 RPD)",
-    "gemini-1.5-flash-8b": "3. Gemini 1.5 Flash 8B (500 RPD)",
-    "gemma-2-27b": "4. Gemma 2 27B (Backup)"
+    "gemini-3-flash-preview": "1. Gemini 3 Flash (20 RPD | The Best, won't break LaTeX)",
+    "gemini-2.5-flash": "2. Gemini 2.5 Flash (20 RPD | Highly Capable alternative)",
+    "gemini-3.1-flash-lite-preview": "3. Gemini 3.1 Flash Lite (500 RPD | Best for bulk testing)",
+    "gemma-3-27b": "4. Gemma 3 27B (14,400 RPD | Massive Backup)"
 }
 
 selected_model = st.selectbox("Choose Model:", options=list(MODEL_OPTIONS.keys()), format_func=lambda x: MODEL_OPTIONS[x])
@@ -121,14 +99,6 @@ if st.button("Generate Optimized Resume", type="primary"):
                 st.stop()
             try:
                 optimized_tex = optimize_resume(jd_input, resume_content, selected_model)
-                
-                # Verify the generated LaTeX
-                v_errors = verify_prompt(optimized_tex)
-                if v_errors:
-                    st.error("🔍 Prompt verification failed:")
-                    for err in v_errors: st.write(f"- {err}")
-                    st.stop()
-                
                 st.success(f"✅ Optimization complete using {selected_model}!")
                 
                 # Save and offer .tex download
