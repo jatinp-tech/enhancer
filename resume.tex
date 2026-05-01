@@ -84,7 +84,7 @@
     \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
         #1 & \footnotesize{#2} \\
     \end{tabular*}
-    \vspace{-3mm}
+    \vspace{-1mm}
 }
 
 \newcommand{\resumeProjectP}[3]{
@@ -158,30 +158,30 @@
  \resumeProject
      {\textbf{Machine Learning Engineer} | Droisys | Noida, Uttar Pradesh}
     {August 2025 – Present}
-        \resumeItemListStart
-        \item{Designed and deployed production-grade machine learning pipelines for retail and liquor product recognition in Account360.}
-        \item{Reduced inference latency by 25--40\% by optimizing preprocessing pipelines, introducing GPU batching, and modifying existing FastAPI endpoints to handle asynchronous requests efficiently.}
-        \item{Developed a few-shot auto-annotation pipeline that reduced manual data annotation effort by 80\% and accelerated dataset preparation.}
-        \item{Improved model robustness on blurry and rotated product images by fine-tuning object shape-based detection models with adversarial examples.}
-        \item{Improved training and experimentation speed by restructuring legacy code, enabling faster iteration and easier deployment.}
-        \item{Maintained and debugged production pipelines running on local GPU servers, with image data fetched from AWS S3 buckets.}
-        \item{Implemented data quality checks using annotation heuristics and Isolation Forest-based anomaly detection to identify potentially misannotated or low-quality training samples.}
-        \resumeItemListEnd
+    \resumeItemListStart
+    \item{Designed and deployed production-grade machine learning pipelines for retail and liquor product recognition in Account360.}
+    \item{Reduced inference latency by 25--40\% by optimizing preprocessing pipelines, introducing GPU batching, and modifying existing FastAPI endpoints to handle asynchronous requests efficiently; further improved performance using FP16 quantized models post-training.}
+    \item{Developed a few-shot auto-annotation pipeline that reduced manual data annotation effort by 80\% and accelerated dataset preparation.}
+    \item{Improved model robustness on blurry and rotated product imagesthrough fine-tuning object shape-based detection models with adversarial examples and multi-scale training (scale=0.5).}
+    \item{Improved training and experimentation speed by \textasciitilde35\% by restructuring legacy code, enabling faster iteration and easier deployment.}
+    \item{Maintained and debugged production pipelines running on local GPU servers, with image data fetched from AWS S3 buckets.}
+    \item{Implemented data quality checks using annotation heuristics and Isolation Forest-based anomaly detection, successfully flagging nearly 90\% of anomalous or low-quality training samples.}
+    \resumeItemListEnd
         
     \vspace{-2mm}
     \resumeProject
       {\textbf{Software Developer} | CIPL | Noida, Uttar Pradesh}
       {July 2023 - July 2025}
         \resumeItemListStart
-        \item{Implemented and evaluated machine learning models for cryptographic analysis and attack simulation across 50+ cipher systems.}
-        \item{Conducted research-driven experimentation by implementing differential cryptanalysis techniques and analyzing multiple cryptographic algorithms.}
+        \item{Implemented and evaluated machine learning models to analyze and classify patterns across 20+ cryptographic cipher systems under diverse attack scenarios.}
         
-        \item{Designed and evaluated neural network architectures for secure communication and near-random ciphertext generation.}
+        \item{Applied differential cryptanalysis using ResNet20-based architectures to learn discriminative features for distinguishing cipher behaviors under controlled perturbations.}
         
-        \item{Built evaluation pipelines using NIST statistical test suites to validate randomness, robustness, and model performance.}
+        \item{Designed neural cryptosystem models to generate near-random ciphertext, achieving indistinguishability with classification accuracy near 50\% (random baseline), indicating minimal exploitable patterns.}
         
-        \item{Applied adversarial machine learning techniques such as FGSM and PGD to analyze vulnerabilities and improve model robustness.}
+        \item{Built automated evaluation pipelines using NIST statistical test suites, validating randomness and robustness with consistent p-values within acceptable thresholds across multiple tests.}
         
+        \item{Conducted comparative adversarial robustness analysis of convolutional architectures (VGG16, ResNet20, InceptionV3) using FGSM and PGD attacks, benchmarking accuracy degradation and identifying architecture-specific failure modes.}
         \resumeItemListEnd
     \vspace{-3mm}    
 
