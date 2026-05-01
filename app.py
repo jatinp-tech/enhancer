@@ -36,6 +36,7 @@ PROMPT_TEMPLATE = r"""You are an elite LaTeX Resume Optimizer and Storyteller. Y
 - COMPUTER VISION (High-Tier): YOLOv8, ConvNeXt, OpenCV, DINO/CLIP embeddings, Object shape-based detection, Image preprocessing.
 - INFERENCE & DEPLOYMENT: FastAPI, Streamlit, GPU batching, Latency optimization (25-40% reduction), local GPU servers.
 - ROBUSTNESS & SECURITY: Adversarial learning (FGSM, PGD), anomaly detection (Isolation Forest), cryptographic analysis.
+- NLP (Basic): Text classification, sentiment analysis fundamentals; familiar with Transformer architecture concepts (BERT, RoBERTa).
 - GEN AI/LLMS: Basic RAG, OpenAI text-embedding-3, GPT-4, Neo4j (Search integration).
 - TOOLS/DBs: SQL, Git, Linux, Jupyter.
 
@@ -140,6 +141,16 @@ if st.button("Generate Optimized Resume", type="primary"):
                 optimized_tex = optimize_resume(jd_input, resume_content, selected_model)
                 st.success(f"✅ Optimization complete using {selected_model}!")
                 
+                # Always save and offer the .tex file for download (works even on Streamlit Cloud without pdflatex)
+                with open("optimized.tex", "w", encoding="utf-8") as f:
+                    f.write(optimized_tex)
+                st.download_button(
+                    label="⬇️ Download Optimized LaTeX (.tex)",
+                    data=optimized_tex.encode("utf-8"),
+                    file_name="optimized.tex",
+                    mime="text/plain"
+                )
+                
                 with st.spinner("Compiling LaTeX to PDF..."):
                     import tempfile
                     import subprocess
@@ -171,8 +182,8 @@ if st.button("Generate Optimized Resume", type="primary"):
                                 mime="application/pdf"
                             )                            
                         else:
-                            st.error("❌ Failed to compile LaTeX to PDF. The model likely generated invalid LaTeX structure or there is a syntax error.")
-                            with st.expander("View LaTeX Errors"):
+                            st.warning("⚠️ pdflatex not available on this server. Use the .tex download above and compile locally with: `pdflatex optimized.tex`")
+                            with st.expander("View LaTeX Compilation Errors"):
                                 st.text(compile_process.stdout)
             except Exception as e:
                 error_msg = str(e)
