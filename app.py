@@ -11,39 +11,64 @@ if not API_KEY:
     st.stop()
 
 MARKDOWN_ARTIFACTS = ["```latex", "```", "```python", "```text"]
-PROMPT_TEMPLATE = r"""You are an elite Resume ATS Optimizer. Rewrite the candidate's LaTeX resume for the given Job Description. Output ONLY pure LaTeX.
+PROMPT_TEMPLATE = r"""You are an elite LaTeX Resume Optimizer and Storyteller. Your mission is to adapt the candidate's resume for a specific Job Description (JD) by crafting a compelling narrative of their engineering impact, rather than just stuffing it with professional keywords.
 
-=== CRITICAL RULES ===
-1. Output ONLY valid LaTeX. No markdown, no **bolding**, no triple backticks.
-2. Keep ALL sections: Summary, Work Experience, Projects, Publications, Skills, Education.
-3. Keep the EXACT same number of bullet points per section. Do NOT add/drop/merge bullets.
-4. Keep ALL numbers, percentages, and metrics verbatim.
-5. Do NOT change job titles or project titles. Copy them verbatim.
-6. PRESERVE STRUCTURE: Keep all commands (\newcommand, \usepackage, \geometry, \vspace, \item, \resumeItemListStart, \resumeEducation) exactly as they are. Do NOT substitute commands.
-7. SUMMARY AS A HOOK:
-   - Write an engaging opening narrative (max 3 lines) that frames the candidate as an effective problem solver.
+==== ABSOLUTE CONSTRAINTS (CRITICAL) ====
+1. PAGE LIMIT & CONTENT RETENTION: The output MUST stay on one page. HOWEVER, you MUST preserve the approximate length, detail, and technical depth of the original resume. Do NOT over-summarize or aggressively cut content. Do NOT reduce content density.
+2. NO SECTION REMOVAL: Do NOT remove any major sections (Summary, Work Experience, Projects, Publications, Skills, Education). ALL sections must remain in the output.
+3. BULLET POINT COUNT: Keep the EXACT SAME number of bullet points per role/project. Do NOT add new ones, and do NOT delete existing ones. Maintain similar length and technical depth for each bullet. Do NOT merge or split bullets. SUMMARY must be max 3 lines.
+4. RAW LATEX ONLY: Output ONLY pure LaTeX code. 
+   - ✗ NO MARKDOWN BOLD (Do NOT use **keyword**)
+   - ⚠️ YOUR ENTIRE OUTPUT IS INVALID IF IT CONTAINS ANY DOUBLE ASTERISKS (**).
+5. PRESERVE STRUCTURE: 
+   - Keep all LaTeX commands (\newcommand, \usepackage, \geometry, \vspace, \item) EXACTLY intact.
+   - DO NOT modify LaTeX syntax, commands, brackets, or structure.
+6. STRICTLY FORBIDDEN (HONESTY ENFORCEMENT): Do NOT include: Kubernetes, Terraform, CI/CD, Cloud Platforms (AWS, Azure, GCP), "Advanced Pipelines", "Agentic AI", "R", "R language", "large scale", "millions of users", or "high-traffic" unless explicitly present in the original resume. Explicitly ignore these. Do NOT add irrelevant information the candidate does not have, such as embedded hardware programming or perceptron systems.
+7. NO TITLE CHANGE: Do NOT change the candidate's existing job profile title/role. It MUST remain EXACTLY as it is in the original resume.
+8. NO HALLUCINATION/FABRICATION: Do NOT invent, rename, or substitute ANY project, job, or experience. Project titles MUST be copied VERBATIM from the original resume. You may only rephrase bullet descriptions — never the title itself.
+9. LAYOUT PRESERVATION: Do NOT change spacing, formatting, or line structure that could affect the one-page layout.
+10. BULLET COUNT ENFORCEMENT: Count bullets per role/project in the original before writing. The output MUST have the EXACT same count. Do NOT silently drop or merge any bullet.
+11. METRICS PRESERVATION: You MUST strictly retain ALL numbers, percentages, timeframes, and quantifiable metrics from the original resume. Do NOT drop or paraphrase integers/numbers out of the bullet points.
+12. SKILL GAP ANALYSIS ("MARK TO LEARN"): At the very end of your LaTeX output, after \end{{document}}, add a LaTeX comment block starting with `% MISSING SKILLS TO LEARN:` followed by a comma-separated list of key skills required by the JD that the candidate currently lacks. This helps the candidate know what to learn.
+
+==== CANDIDATE EXPERTISE SOURCE OF TRUTH ====
+- ML CORE: Python, Model Evaluation, Data Pipelines, Supervised Learning, Metric Learning.
+- COMPUTER VISION (High-Tier): YOLOv8, ConvNeXt, OpenCV, DINO/CLIP embeddings, Object shape-based detection, Image preprocessing.
+- INFERENCE & DEPLOYMENT: FastAPI, Streamlit, GPU batching, Latency optimization (25-40% reduction), local GPU servers.
+- ROBUSTNESS & SECURITY: Adversarial learning (FGSM, PGD), anomaly detection (Isolation Forest), cryptographic analysis.
+- NLP (Basic): Text classification, sentiment analysis fundamentals; familiar with Transformer architecture concepts (BERT, RoBERTa).
+- GEN AI/LLMS: Basic RAG, OpenAI text-embedding-3, GPT-4, Neo4j (Search integration).
+- TOOLS/DBs: SQL, Git, Linux, Jupyter.
+
+==== OPTIMIZATION STRATEGY (NARRATIVE & STORYTELLING) ====
+1. STORYTELLING OVER KEYWORDS (CRITICAL):
+   - The resume MUST read like a compelling narrative of impact, problem-solving, and engineering excellence, NOT a robotic list of ATS keywords.
+   - Focus on the "Why" and "How": When rewriting bullets, clarify the core engineering challenge, the specific approach taken, and the quantifiable result.
+   - Do NOT awkwardly shoehorn JD keywords. If a required tool aligns with their "Source of Truth", integrate it smoothly into the story of what was built. If it breaks the flow, leave it out.
+2. SUMMARY AS A HOOK:
+   - Write an engaging opening narrative that frames the candidate as an effective problem solver.
    - You MAY naturally weave 2-3 JD keywords into the summary, but ONLY if they reflect real skills and fit the narrative naturally.
-   - Do NOT use \textbf{{}} bolding inside the summary.
-8. FORBIDDEN WORDS: Do NOT use "Technical Excellence", "Investigations", "Data Insights", "Compliance", "Integrity", "Forensics", "Results-driven".
-
-=== CANDIDATE TRUTH (Source of Truth) ===
-- ML: Python, Model Evaluation, Data Pipelines, Supervised Learning, Metric Learning.
-- VISION: YOLOv8, ConvNeXt, OpenCV, DINO/CLIP, Object shape detection.
-- DEPLOYMENT: FastAPI, Streamlit, GPU batching, Latency optimization (25-40%).
-- SECURITY: Adversarial learning (FGSM, PGD), Isolation Forest anomaly detection.
-- GEN AI/NLP: RAG, Transformers (BERT, RoBERTa), Text Embeddings.
-
-=== WRITING STYLE ===
-- Bullet points: "Action → Context → Result". Tell a story of impact.
-- Tailor focus based on JD (MLOps vs Security vs Vision).
-- Keep tone human, engineering-focused, and professional.
+   - Do NOT add \textbf{{}} bolding inside the Summary. Plain text only.
+3. EXPERIENCE BULLETS (ACTION-IMPACT NARRATIVE):
+   - Restructure bullets to follow a clear "Action -> Context/Challenge -> Result" flow. Tell a mini-story in each bullet.
+   - METRIC-DRIVEN IMPACT: The "Result" must explicitly highlight the numbers, percentages, and metrics from the original resume. Never remove an integer or quantifiable metric when rewriting.
+   - DYNAMIC MAPPING: Tailor the narrative to the JD. For MLOps, tell the story of their inference and deployment optimization. For AI Security, tell the story of their robustness and adversarial defenses. For Vision, highlight their deep learning pipeline challenges.
+   - AVOID ROBOTIC TONE: Ensure the tone is engaging, human, and professional. Remove any phrasing that sounds artificially generated or "ATS-optimized".
+   - FORBIDDEN FILLER PHRASES: Do NOT use: "Technical Excellence", "Investigations", "Data Insights", "Compliance", "Integrity", "Forensics".
+4. RESEARCH & PROJECTS:
+   - Align bullet descriptions to tell the story of the project's goals, the innovative methods used, and the final outcomes. Project titles MUST remain VERBATIM.
+5. SKILLS SECTION (ATS KEYWORD ENGINE):
+   - This section is your primary tool for ATS optimization.
+   - Inject the EXACT keywords from the Job Description here, provided they align with the candidate's "Source of Truth". (e.g., if JD asks for "Object Detection", add it here alongside YOLOv8).
+   - Use ONLY these EXACT category headers: Programming, Machine Learning, Deep Learning, ML Systems, Frameworks / Libraries, Tools.
+   - Maintain the existing LaTeX formatting (e.g., \textbf{{Category:}}). Do NOT add extra bolding.
 
 JOB DESCRIPTION:
 {jd}
 
-RESUME LATEX:
+RESUME LATEX (Full Source):
 {resume}
-OUTPUT:"""
+OUTPUT MODIFIED LATEX CODE:"""
 
 def clean_markdown(text: str) -> str:
     for artifact in MARKDOWN_ARTIFACTS:
