@@ -89,6 +89,14 @@ def sanitize_latex(text: str) -> str:
         text = text.replace(old, new)
     return text
 
+def optimize_resume(jd: str, resume: str, model_id: str) -> str:
+    client = genai.Client(api_key=API_KEY)
+    # The PROMPT_TEMPLATE uses doubled braces for \textbf{{}} etc. to work with .format()
+    prompt = PROMPT_TEMPLATE.format(jd=jd, resume=resume)
+    response = client.models.generate_content(model=model_id, contents=prompt)
+    cleaned_text = clean_markdown(response.text)
+    return sanitize_latex(cleaned_text)
+
 def compile_pdf(tex_content: str, base_name: str = "resume") -> bytes:
     import tempfile, subprocess, os
     with tempfile.TemporaryDirectory() as td:
