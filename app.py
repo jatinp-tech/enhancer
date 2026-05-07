@@ -46,9 +46,10 @@ PROMPT_TEMPLATE = r"""You are a Grounded Engineering Resume Optimizer. Your miss
    - Focus on the "Action -> Result": Clearly state the specific engineering task, the tool used, and the quantifiable outcome.
    - FORBIDDEN FANCY VERBS: Do NOT use "Architected", "Spearheaded", "Orchestrated", "Leveraged", "Pioneered", "Harnessed", "Conceptualized", "Transformed", or "Championed".
    - PREFERRED VERBS: Use Built, Developed, Implemented, Improved, Reduced, Scaled, Optimized, Trained, Deployed, or Integrated.
-2. SUMMARY AS A DIRECT HOOK:
-   - Write a concise summary that highlights the candidate as a "Machine Learning Engineer" with specific strengths.
-   - No fluff. No "driving business value through...". Instead: "Machine Learning Engineer with 3 years of experience specializing in CV and ML Systems..."
+2. SUMMARY (SIMPLE & HUMAN):
+   - Keep the summary simple, professional, and human. 
+   - Highlight the candidate as a "Machine Learning Engineer" with 3 years of experience.
+   - Focus on core competencies like ML systems, model performance, and reliability without over-technical lists.
    - Do NOT add \textbf{{}} bolding inside the Summary. Plain text only.
 3. EXPERIENCE BULLETS (ENGINEERING-FIRST):
    - Restructure bullets to follow a clear "Built [X] using [Y] to achieve [Z]" flow. 
@@ -88,19 +89,65 @@ def sanitize_latex(text: str) -> str:
         text = text.replace(old, new)
     return text
 
-def optimize_resume(jd: str, resume: str, model_id: str) -> str:
-    client = genai.Client(api_key=API_KEY)
-    # The PROMPT_TEMPLATE uses doubled braces for \textbf{{}} etc. to work with .format()
-    prompt = PROMPT_TEMPLATE.format(jd=jd, resume=resume)
-    response = client.models.generate_content(model=model_id, contents=prompt)
-    cleaned_text = clean_markdown(response.text)
-    return sanitize_latex(cleaned_text)
+def compile_pdf(tex_content: str, base_name: str = "resume") -> bytes:
+    import tempfile, subprocess, os
+    with tempfile.TemporaryDirectory() as td:
+        tp = os.path.join(td, f"{base_name}.tex")
+        pp = os.path.join(td, f"{base_name}.pdf")
+        lp = os.path.join(td, f"{base_name}.log")
+        
+        with open(tp, "w", encoding="utf-8") as f:
+            f.write(tex_content)
+            
+        pdflatex_cmd = ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", f"{base_name}.tex"]
+        
+        # Double-pass compilation for cross-refs
+        subprocess.run(pdflatex_cmd, cwd=td, capture_output=True)
+        compile_process = subprocess.run(pdflatex_cmd, cwd=td, capture_output=True, text=True)
+        
+        has_fatal = False
+        if os.path.exists(lp):
+            with open(lp, "r", errors="ignore") as lf:
+                log_text = lf.read()
+                if "Fatal error" in log_text or "Emergency stop" in log_text:
+                    has_fatal = True
+        
+        if compile_process.returncode == 0 and os.path.exists(pp) and not has_fatal:
+            with open(pp, "rb") as f:
+                return f.read()
+    return None
 
 # --- STREAMLIT UI ---
 st.set_page_config(page_title="LaTeX Resume Optimizer", page_icon="📄")
 st.title("📄 LaTeX Resume Optimizer")
 
 st.markdown("ATS resume optimizer with JD matching using Google AI Studio selected models.")
+
+# --- SIDEBAR: CURRENT RESUME ---
+with st.sidebar:
+    st.header("📂 Current Resume")
+    try:
+        with open("resume.tex", "r", encoding="utf-8") as f:
+            current_resume_tex = f.read()
+        
+        st.download_button("⬇️ Download Current .tex", current_resume_tex, "resume.tex")
+        
+        if st.button("🔧 Compile Current to PDF"):
+            with st.spinner("Compiling current resume..."):
+                pdf_bytes = compile_pdf(current_resume_tex, "current_resume")
+                if pdf_bytes:
+                    st.session_state.current_pdf = pdf_bytes
+                    st.success("✅ Current PDF Ready!")
+                else:
+                    st.error("❌ Failed to compile current resume.")
+        
+        if "current_pdf" in st.session_state:
+            st.download_button("⬇️ Download Current PDF", st.session_state.current_pdf, "resume.pdf", "application/pdf")
+            
+    except FileNotFoundError:
+        st.error("'resume.tex' not found!")
+
+st.divider()
 
 MODEL_OPTIONS = {
     "gemini-3-flash-preview": "1. Gemini 3 Flash (20 RPD | The Best, won't break LaTeX)",
@@ -112,6 +159,11 @@ MODEL_OPTIONS = {
 selected_model = st.selectbox("Choose Model:", options=list(MODEL_OPTIONS.keys()), format_func=lambda x: MODEL_OPTIONS[x])
 jd_input = st.text_area("Paste JD here:", height=300)
 
+if "optimized_tex" not in st.session_state:
+    st.session_state.optimized_tex = None
+if "optimized_pdf" not in st.session_state:
+    st.session_state.optimized_pdf = None
+
 if st.button("Generate Optimized Resume", type="primary"):
     if not jd_input:
         st.warning("⚠️ Please provide a Job Description.")
@@ -120,47 +172,31 @@ if st.button("Generate Optimized Resume", type="primary"):
             try:
                 with open("resume.tex", "r", encoding="utf-8") as f:
                     resume_content = f.read()
-            except FileNotFoundError:
-                st.error("❌ 'resume.tex' was not found in the repository!")
-                st.stop()
-            try:
+                
                 optimized_tex = optimize_resume(jd_input, resume_content, selected_model)
-                st.success(f"✅ Optimization complete using {selected_model}!")
+                st.session_state.optimized_tex = optimized_tex
                 
-                # Save and offer .tex download
-                with open("optimized.tex", "w", encoding="utf-8") as f:
-                    f.write(optimized_tex)
-                st.download_button("⬇️ Download Optimized LaTeX (.tex)", optimized_tex, "optimized.tex")
-                
-                with st.spinner("Compiling LaTeX to PDF..."):
-                    import tempfile, subprocess, os
-                    with tempfile.TemporaryDirectory() as td:
-                        tp = os.path.join(td, "optimized.tex")
-                        pp = os.path.join(td, "optimized.pdf")
-                        lp = os.path.join(td, "optimized.log")
-                        
-                        with open(tp, "w", encoding="utf-8") as f: f.write(optimized_tex)
-                        
-                        pdflatex_cmd = ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "optimized.tex"]
-                        
-                        # Double-pass compilation for ResumeGo compatibility (resolves cross-refs/outlines)
-                        subprocess.run(pdflatex_cmd, cwd=td, capture_output=True)
-                        compile_process = subprocess.run(pdflatex_cmd, cwd=td, capture_output=True, text=True)
-                        
-                        has_fatal = False
-                        if os.path.exists(lp):
-                            with open(lp, "r", errors="ignore") as lf:
-                                log_text = lf.read()
-                                if "Fatal error" in log_text or "Emergency stop" in log_text:
-                                    has_fatal = True
-                        
-                        if compile_process.returncode == 0 and os.path.exists(pp) and not has_fatal:
-                            with open(pp, "rb") as f:
-                                st.success("🎉 PDF Compiled Successfully!")
-                                st.download_button("⬇️ Download Optimized PDF", f.read(), "optimized.pdf", "application/pdf")
-                        else:
-                            st.warning("⚠️ PDF compilation failed. Download the .tex and compile locally.")
-                            with st.expander("View LaTeX Errors"):
-                                st.text(compile_process.stdout[-3000:] if compile_process.stdout else "No output")
+                with st.spinner("Compiling Optimized PDF..."):
+                    pdf_bytes = compile_pdf(optimized_tex, "optimized")
+                    st.session_state.optimized_pdf = pdf_bytes
+                    
+                if st.session_state.optimized_pdf:
+                    st.success(f"✅ Optimization & Compilation complete using {selected_model}!")
+                else:
+                    st.warning("⚠️ Optimization complete, but PDF compilation failed.")
+                    
             except Exception as e:
                 st.error(f"An error occurred: {e}")
+
+# --- PERSISTENT DOWNLOAD BUTTONS ---
+if st.session_state.optimized_tex:
+    st.divider()
+    st.subheader("🚀 Optimized Results")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.download_button("⬇️ Download Optimized LaTeX (.tex)", st.session_state.optimized_tex, "optimized.tex")
+    with col2:
+        if st.session_state.optimized_pdf:
+            st.download_button("⬇️ Download Optimized PDF", st.session_state.optimized_pdf, "optimized.pdf", "application/pdf")
+        else:
+            st.error("PDF not available (compilation failed).")
