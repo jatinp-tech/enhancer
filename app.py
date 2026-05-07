@@ -49,7 +49,8 @@ PROMPT_TEMPLATE = r"""You are a Grounded Engineering Resume Optimizer. Your miss
 2. SUMMARY (SIMPLE & HUMAN):
    - Keep the summary simple, professional, and human. 
    - Highlight the candidate as a "Machine Learning Engineer" with 3 years of experience.
-   - Focus on core competencies like ML systems, model performance, and reliability without over-technical lists.
+   - Focus on core competencies like ML systems, model performance, and reliability.
+   - ADAPT DOMAINS: Mention specific expertise (e.g., CV, RAG, or Adversarial Research) only if the JD shows a strong requirement for them.
    - Do NOT add \textbf{{}} bolding inside the Summary. Plain text only.
 3. EXPERIENCE BULLETS (ENGINEERING-FIRST):
    - Restructure bullets to follow a clear "Built [X] using [Y] to achieve [Z]" flow. 
