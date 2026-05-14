@@ -171,7 +171,7 @@
 
 \item{Maintained and debugged production workloads on local GPU servers, with data pulled from AWS S3.}
 
-\item{Improved dataset quality by using perceptual hashing (pHash) and custom heuristics to catch and remove misannotated or duplicate samples, cleaning up nearly 90\% of the training data.}
+\item{Improved dataset quality by applying Isolation Forest on extracted image features to flag anomalous or misannotated samples, cleaning up noisy labels across the training data.}
     \resumeItemListEnd
         
     \vspace{-2mm}
